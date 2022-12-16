@@ -9,9 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 
 
-from ledgerapp.models import Ledger
+from ledgerapp.models import Ledger, Item
 from ledgerapp.utils import Calendar
-from ledgerapp.forms import LedgerForm
+from ledgerapp.forms import LedgerForm, ItemForm
 
 
 from django.views.generic import View
@@ -45,13 +45,13 @@ def create_ledger(request):
             description=description,
         )
         return HttpResponseRedirect(reverse("ledgerapp:dashboard"))
-    return render(request, "ledger.html", {"form": form })
+    return render(request, "ledgerapp/ledger-create.html", {"form": form })
 
 
 class LedgerEdit(generic.UpdateView):
     model = Ledger
     fields = ["date", "type", "item", "business","category", "correspondent", "amount", "payment", "description"]
-    template_name = "ledger.html"
+    template_name = "ledgerapp/ledger-create.html"
     # success_url = reverse_lazy("ledgerapp:calendar")
 
 
@@ -59,14 +59,27 @@ class LedgerEdit(generic.UpdateView):
 def ledger_details(request, ledger_id):
     ledger = Ledger.objects.get(id=ledger_id)
     context = {"ledger": ledger}
-    return render(request, "ledger-details.html", context)
+    return render(request, "ledgerapp/ledger-details.html", context)
 
 
 
 class LedgerDeleteView(generic.DeleteView):
     model = Ledger
-    template_name = "ledger-delete.html"
+    template_name = "ledgerapp/ledger-delete.html"
     success_url = reverse_lazy("ledgerapp:dashboard")
+
+@login_required(login_url="signup")
+def create_item(request):
+    form = ItemForm(request.POST or None)
+    if request.POST and form.is_valid():
+        item = form.cleaned_data["item"]
+        Item.objects.get_or_create(
+            # user=request.user,
+            item = item
+        )
+        return HttpResponseRedirect(reverse("calendarapp:event-new"))
+    return render(request, "ledger-item.html", {"form": form})
+
 
 
 class LedgerViewNew(LoginRequiredMixin, generic.View):
@@ -83,7 +96,6 @@ class LedgerViewNew(LoginRequiredMixin, generic.View):
         for ledger in ledgers:
             ledger_list.append(
                 {
-                    # "title": ledger.title,
                     "date": ledger.date.strftime("%Y-%m-%d"),
                     "type": ledger.type,
                     "item": ledger.item,
@@ -92,9 +104,6 @@ class LedgerViewNew(LoginRequiredMixin, generic.View):
                     "amount": ledger.amount,
                     "payment": ledger.payment,
                     "description": ledger.description,
-
-
-
                 }
             )
         context = {"form": forms, "ledgers": ledger_list,

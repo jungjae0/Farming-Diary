@@ -94,25 +94,25 @@ def create_item(request):
             # user=request.user,
             item = item
         )
-        return HttpResponseRedirect(reverse("calendarapp:event_new"))
+        return HttpResponseRedirect(reverse("calendarapp:event-new"))
     return render(request, "calendar-item.html", {"form": form})
 
 class EventEdit(generic.UpdateView):
     model = Event
     fields = ["title","start_time", "end_time", "item", "description", "active", "image", "level"]
-    template_name = "event.html"
+    template_name = "calendarapp/event-edit.html"
     success_url = reverse_lazy("calendarapp:calendar")
 
 class EventDeleteView(generic.DeleteView):
     model = Event
-    template_name = "event_delete.html"
+    template_name = "calendarapp/event_delete.html"
     success_url = reverse_lazy("calendarapp:calendar")
 
 @login_required(login_url="signup")
 def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
     context = {"event": event }
-    return render(request, "event-details.html", context)
+    return render(request, "calendarapp/event-details.html", context)
 
 
 class CalendarViewNew(LoginRequiredMixin, generic.View):

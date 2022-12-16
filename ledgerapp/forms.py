@@ -1,7 +1,13 @@
 from django.forms import ModelForm, DateInput
-from ledgerapp.models import Ledger
+from ledgerapp.models import Ledger, Item
 from django import forms
 
+class ItemForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ['item']
+
+        exclude = ["user"]
 
 class LedgerForm(ModelForm):
     class Meta:
@@ -12,12 +18,6 @@ class LedgerForm(ModelForm):
             "date": DateInput(
                 attrs={'type': 'datetime-local', 'class': 'form-control'},
                 format='%Y-%m-%d'
-            ),
-            "type": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "수입·지출 선택"},
-            ),
-            "item": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "작물 선택"},
             ),
             "business": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "사업 유형 입력"},
@@ -31,10 +31,8 @@ class LedgerForm(ModelForm):
             "amount": forms.NumberInput(
                 attrs={"class": "form-control", "placeholder": "금액 입력"},
             ),
-            "payment": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "지불 유형 선택"},
-            ),
-            "description": forms.TextInput(
+
+            "description": forms.Textarea(
                 attrs={"class": "form-control", "placeholder": "특이사항 입력"},
             ),
         }

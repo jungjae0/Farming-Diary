@@ -44,10 +44,10 @@
                                                   <a class="btn btn-info" href="{% url 'calendarapp:event-detail' event.pk %}" title="view">
                                                       <i class="fa fa-eye"></i>
                                                   </a>
-                                                  <a class="btn btn-info" href="{% url 'calendarapp:event_edit' event.pk %}" title="edit">
+                                                  <a class="btn btn-info" href="{% url 'calendarapp:event-edit' event.pk %}" title="edit">
                                                     <i class="fa fa-edit"></i>
                                                   </a>
-                                                  <a class="btn btn-danger" href="{% url 'calendarapp:remove_event' event.pk %}" title="delete">
+                                                  <a class="btn btn-danger" href="{% url 'calendarapp:event-remove' event.pk %}" title="delete">
                                                       <i class="fa fa-trash"></i>
                                                   </a>
                                                 </td>

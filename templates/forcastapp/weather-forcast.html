@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Weather Forcast{% endblock title %}
+
+{% block extracss %}
+{% endblock extracss %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="title row">
+            <h3>{{ date }}</h3>
+
+        </div>
+
+        <p>{{ city_name }}</p>
+        <p>{{ temp }}</p>
+        </hr>
+        <p>{{ date1 }}</p>
+        <p>{{ temp_max1 }}</p>
+        </hr>
+        <p>{{ date2 }}</p>
+        <p>{{ temp_max2 }}</p>
+        </hr>
+        <p>{{ date3 }}</p>
+        <p>{{ temp_max3 }}</p>
+        </hr>
+        <p>{{ date4 }}</p>
+        <p>{{ temp_max4 }}</p>
+    </div>
+</div>
+{% endblock content %}

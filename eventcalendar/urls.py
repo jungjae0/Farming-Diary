@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# from forcastapp.views import forcast
+
 # from .views import DashboardView
 
 
@@ -26,10 +28,11 @@ urlpatterns = [
     # path("", DashboardView.as_view(), name="dashboard"),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
-    path("", include("calendarapp.urls")),
+    path("diary/", include("calendarapp.urls")),
     path("weather/", include("weather.urls")),
     path("ledger/", include("ledgerapp.urls")),
+    path("", include("forcastapp.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

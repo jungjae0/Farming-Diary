@@ -32,7 +32,7 @@
     <body class="app sidebar-mini">
         <!-- Navbar-->
         <header class="app-header">
-            <a class="app-header__logo" href="#">영농일지</a>
+            <a class="app-header__logo" href="{% url 'forcastapp:result' %}">영농일지</a>
             <!-- Sidebar toggle button-->
             <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
             <!-- Navbar Right Menu-->
@@ -60,6 +60,9 @@
         <aside class="app-sidebar">
             <ul class="app-menu">
                 <li>
+                    <a class="app-menu__item active" href="{% url 'forcastapp:result' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Home</span></a>
+                </li>
+                <li>
                     <a class="app-menu__item active" href="{% url 'calendarapp:dashboard' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">영농일지 현황</span></a>
                 </li>
                 <li>
@@ -75,7 +78,7 @@
                             <a class="treeview-item" href="{% url 'calendarapp:running_events' %}"><i class="icon fa fa-circle-o"></i>예정</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="{% url 'calendarapp:all_events' %}"><i class="icon fa fa-circle-o"></i>전체</a>
+                            <a class="treeview-item" href="{% url 'calendarapp:all-events' %}"><i class="icon fa fa-circle-o"></i>전체</a>
                         </li>
                     </ul>
                 </li>
@@ -111,10 +114,13 @@
                             <a class="treeview-item" href="{% url 'weatherapp:humid-graph' %}"><i class="icon fa fa-circle-o"></i>습도</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>강우</a>
+                            <a class="treeview-item" href="{% url 'weatherapp:rainfall-graph' %}"><i class="icon fa fa-circle-o"></i>강우</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>일조량</a>
+                            <a class="treeview-item" href="{% url 'weatherapp:insolation-graph' %}"><i class="icon fa fa-circle-o"></i>일조량</a>
+                        </li>
+                        <li>
+                            <a class="treeview-item" href="{% url 'weatherapp:yesterday' %}"><i class="icon fa fa-circle-o"></i>어제 날씨</a>
                         </li>
                     </ul>
                 </li>
