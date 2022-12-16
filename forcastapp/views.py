@@ -9,8 +9,6 @@ def index(request):
     return render(request, "forcastapp/weather-forcast.html")
 
 
-
-
 def result(request):
     if request.method:
         # city_name = request.POST["city"].lower()
@@ -72,7 +70,7 @@ def result(request):
             "city_name":"Not Found, Check your spelling..."
             }
         print(context)
-
+        print(w_dataset)
         return render(request, "forcastapp/weather-forcast.html", context)
 
     else:

@@ -3,7 +3,7 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import urlopen
 import orjson
 import os
-import schedule
+# import schedule
 import time
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eventcalendar.settings")
@@ -19,8 +19,8 @@ def parser():
 
     # 전날 자료까지만 제공
 
-    sday = 20191213
-    eday = 20201213
+    sday = 20211215
+    eday = 20221215
 
     params = f'?{quote_plus("ServiceKey")}={servicekey}&' + urlencode({
         quote_plus("pageNo"): "1",  # 페이지 번호 // default : 1
