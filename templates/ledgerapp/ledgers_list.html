@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Event List{% endblock title %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+        <p>Event List</p>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item"><a href="#">Event List</a></li>
+    </ul>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="table-responsive">
+                    <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 189.281px;">일자</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">구분</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 102.141px;">품목</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">사업유형</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">종류</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">거래처</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">금액</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">결제</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">버튼</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for event in object_list %}
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_1">{{ event.date | date:'Y-m-d' }}</td>
+                                                {% if event.type == '수입' %}
+                                                <td class="text-info">{{ event.type }}</td>
+                                                {% else %}
+                                                <td class="text-danger">{{ event.type }}</td>
+                                                {% endif %}
+                                                <td>{{ event.item }}</td>
+                                                <td>{{ event.business }}</td>
+                                                <td>{{ event.category }}</td>
+                                                <td>{{ event.correspondent }}</td>
+                                                <td>{{ event.amount }}</td>
+                                                {% if evnet.payment == "신용카드" %}
+                                                <td class="text-warning">{{ event.payment }}</td>
+                                                {% elif evnet.payment == "체크카드" %}
+                                                <td class="text-success">{{ event.payment }}</td>
+                                                {% else %}
+                                                <td class="text-primary">{{ event.payment }}</td>
+                                                {% endif %}
+<!--                                                <td>{{ event.end_time }}</td>-->
+                                                <td>
+                                                  <a class="btn btn-info" href="{% url 'ledgerapp:ledger-detail' event.pk %}" title="view">
+                                                      <i class="fa fa-eye"></i>
+                                                  </a>
+                                                  <a class="btn btn-info" href="{% url 'ledgerapp:ledger_edit' event.pk %}" title="edit">
+                                                    <i class="fa fa-edit"></i>
+                                                  </a>
+                                                  <a class="btn btn-danger" href="{% url 'ledgerapp:remove_ledger' event.pk %}" title="delete">
+                                                      <i class="fa fa-trash"></i>
+                                                  </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block extrascripts %}
+    <script type="text/javascript" src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/dataTables.bootstrap.min.js' %}"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+{% endblock extrascripts %}

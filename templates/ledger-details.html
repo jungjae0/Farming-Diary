@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Event Details
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="clearfix">
+        <a class="btn btn-info right mr-2" href="{% url 'ledgerapp:ledger_edit' ledger.pk %}"> Edit Event </a>
+    </div>
+
+    <div class="clearfix">
+        <h3>날짜: {{ ledger.date }}</h3>
+        <p>구분: {{ ledger.type }}</p>
+        <p>품목: {{ ledger.item }}</p>
+        <p>종류: {{ ledger.business }}</p>
+        <p>거래처: {{ ledger.category }}</p>
+        <p>금액: {{ ledger.correspondent }}</p>
+        <p>결제: {{ ledger.amount }}</p>
+        <p>내용: {{ ledger.description }}</p>
+    </div>
+    <hr>
+</div>
+{% endblock %}

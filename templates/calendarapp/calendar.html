@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Event Calendar{% endblock title %}
+
+{% block extracss %}
+  <link href="{% static 'calender/main.css' %}" rel="stylesheet" />
+
+{% endblock extracss %}
+
+{% block breadcrumb %}
+  <div>
+      <h1><i class="fa fa-calendar"></i> Calendar</h1>
+      <p>Event Calendar</p>
+  </div>
+  <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+      <li class="breadcrumb-item"><a href="#">Calendar</a></li>
+  </ul>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile row">
+            <div class="col-md-3">
+                <div id="external-events">
+                    <h4 class="mb-4">Running Events</h4>
+                    {% for event in events_month %}
+                      <div class="fc-event">
+                          <h3>{{ event.title }}</h3>
+                          <p>From: {{ event.start_time | date:'Y-m-d' }}</p>
+                          <p>To: {{ event.end_time | date:'Y-m-d' }}</p>
+                      </div>
+                    {% empty %}
+                      <p>No Running Events Found</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="clearfix">
+                    <a class="btn btn-info left" href="{% url 'calendarapp:calendar' %}?{{ prev_month }}"> Previous Month </a>
+                    <a class="btn btn-info right" href="{% url 'calendarapp:calendar' %}?{{ next_month }}"> Next Month </a>
+                    <a class="btn btn-info right" href="{% url 'calendarapp:event_new' %}"> New Event </a>
+                </div>
+                {{ calendar }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

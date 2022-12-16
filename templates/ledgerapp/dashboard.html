@@ -1,0 +1,119 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Event Dashboard{% endblock title %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+        <p>Event Dashboard</p>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+    </ul>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div class="widget-small primary coloured-icon">
+            <i class="icon fa fa-files-o fa-3x"></i>
+            <div class="info">
+                <h4>{{ month }}월 수입</h4>
+                <p><b>{{ income.count }} 건</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="widget-small info coloured-icon">
+            <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+            <div class="info">
+                <h4>{{ month }}월 지출</h4>
+                <p><b>{{ outcome.count }} 건</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="widget-small warning coloured-icon">
+            <i class="icon fa fa-users fa-3x"></i>
+            <div class="info">
+                <h4>{{ month }}월 합계</h4>
+                <p><b>{{ total_ledger.count }} 건</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-12">
+    <div class="tile">
+        <div class="tile-body">
+            <div class="table-responsive">
+                <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 189.281px;">일자</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">구분</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 102.141px;">품목</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">사업유형</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">종류</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">거래처</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">금액</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">결제</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">버튼</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for event in income %}
+                                        <tr role="row" class="odd">
+                                            <td>{{ event.date }}</td>
+                                            <td>{{ event.type }}</td>
+                                            <td>{{ event.item }}</td>
+                                            <td>{{ event.business }}</td>
+                                            <td>{{ event.category }}</td>
+                                            <td>{{ event.correspondent }}</td>
+                                            <td>{{ event.amount }}</td>
+                                            <td>{{ event.payment }}</td>
+                                            <td>
+                                              <a class="btn btn-info" href="#" title="view" onclick="showPopup('{% url 'ledgerapp:ledger-detail' event.pk %}')">
+                                                  <i class="fa fa-eye"></i>
+                                              </a>
+                                              <a class="btn btn-info" href="#" title="edit" onclick="showPopup('{% url 'ledgerapp:ledger_edit' event.pk %}')">
+                                                <i class="fa fa-edit"></i>
+                                              </a>
+                                              <a class="btn btn-danger" href="{% url 'ledgerapp:remove_ledger' event.pk %}" title="delete">
+                                                  <i class="fa fa-trash"></i>
+                                              </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div align="right">
+                            <a class="btn btn-success" href="{% url 'ledgerapp:ledger_new' %}">추가하기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extrascripts %}
+    <script type="text/javascript" src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/dataTables.bootstrap.min.js' %}"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+
+     <script type="text/javascript">
+      function showPopup(target) { window.open(target, "a", "width=500, height=600, left=100, top=50"); }
+      </script>
+{% endblock extrascripts %}
