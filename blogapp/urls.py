@@ -5,7 +5,7 @@ app_name = "blogapp"
 
 urlpatterns = [
     path('search/<str:q>/', views.PostSearch.as_view(), name="search"),
-    path('delete_comment/<int:pk>/', views.delete_comment, name="remove-comment"),
+    path('delete_comment/<int:pk>/', views.delete_comment),
     path('update_comment/<int:pk>/', views.CommentUpdate.as_view(), name="update-comment"),
     path('update_post/<int:pk>/', views.PostUpdate.as_view(), name="update-post"),
     path('create_post/', views.PostCreate.as_view(), name="create-post"),

@@ -70,7 +70,7 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
 
-    template_name = 'blogapp/questionpost_update_form.html'
+    template_name = 'blogapp/post_update_form.html'
 
     def get_context_data(self, **kwargs):
         context = super(PostUpdate, self).get_context_data()
@@ -119,7 +119,7 @@ def category_page(request, slug):
 
     return render(
         request,
-        'blogapp/questionpost_list.html',
+        'blogapp/post_list.html',
         {
             'post_list': post_list,
             'categories': Category.objects.all(),
@@ -135,7 +135,7 @@ def tag_page(request, slug):
 
     return render(
         request,
-        'blogapp/questionpost_list.html',
+        'blogapp/post_list.html',
         {
             'post_list': post_list,
             'tag': tag,
@@ -182,7 +182,6 @@ def delete_comment(request, pk):
         return redirect(post.get_absolute_url())
     else:
         raise PermissionDenied
-
 
 class PostSearch(PostList):
     paginate_by = None
