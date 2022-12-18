@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 {% load static %}
-<head>
-    <title>{% block head_title %}Blog{% endblock %}</title>
+{% block head_title %}Blog{% endblock %}
+{% block extracss %}
     <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}" media="screen">
 
     <script src="https://kit.fontawesome.com/726bbd6862.js" crossorigin="anonymous"></script>
-</head>
-
+{% endblock extracss%}
 <body>
 
 
@@ -32,5 +31,3 @@
         crossorigin="anonymous"></script>
 {% endblock extrascripts %}
 </body>
-
-</html>

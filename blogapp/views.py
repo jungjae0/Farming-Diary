@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from .forms import CommentForm
 
+
 class PostList(ListView):
     model = Post
     ordering = '-pk'
@@ -40,7 +41,7 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
         current_user = self.request.user
-        if current_user.is_authenticated or (current_user.is_staff or current_user.is_superuser or self.request.user.is_authenticated):
+        if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser or user.is_authenticated):
             form.instance.author = current_user
             response = super(PostCreate, self).form_valid(form)
 
@@ -62,7 +63,7 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
             return response
 
         else:
-            return redirect("blogapp/post_list.html")
+            return redirect('/blogapp/')
 
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
