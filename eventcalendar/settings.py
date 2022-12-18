@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "weather",
     "ledgerapp.apps.LedgerappConfig",
     "forcastapp",
-    "blogapp"
+    "blogapp",
+    "blogquestionapp",
 ]
 
 MIDDLEWARE = [

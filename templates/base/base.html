@@ -2,18 +2,6 @@
 <html lang="en">
     {% load static %}
     <head>
-<!--        <meta name="description" content="Event Dashboard" />-->
-<!--        &lt;!&ndash; Twitter meta&ndash;&gt;-->
-<!--        <meta property="twitter:card" content="summary_large_image" />-->
-<!--        <meta property="twitter:site" content="@sajib1066" />-->
-<!--        <meta property="twitter:creator" content="@sajib1066" />-->
-<!--        &lt;!&ndash; Open Graph Meta&ndash;&gt;-->
-<!--        <meta property="og:type" content="website" />-->
-<!--        <meta property="og:site_name" content="Vali Admin" />-->
-<!--        <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme" />-->
-<!--        <meta property="og:url" content="https://sajib1066.github.io/" />-->
-<!--        <meta property="og:image" content="https://sajib1066.github.io/images/me.jpg" />-->
-<!--        <meta property="og:description" content="Event Dashboard" />-->
         <title>{% block title %}{% endblock title  %}</title>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -26,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
         <!-- Font-icon css-->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="https://kit.fontawesome.com/726bbd6862.js" crossorigin="anonymous"></script>
         {% block extracss %}
         {% endblock extracss %}
     </head>
@@ -48,9 +37,15 @@
                         <li>
                             <a class="dropdown-item" href="#"><i class="fa fa-user fa-lg"></i> Profile</a>
                         </li>
+                        {% if user.is_authenticated %}
                         <li>
                             <a class="dropdown-item" href="{% url 'accounts:signout' %}"><i class="fa fa-sign-out fa-lg"></i> Sign Out</a>
                         </li>
+                        {% else %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'accounts:signin' %}"><i class="fa fa-sign-out fa-lg"></i> Sign In</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>
@@ -85,9 +80,6 @@
                 <li>
                     <a class="app-menu__item active" href="{% url 'ledgerapp:dashboard' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">입출금 장부 현황</span></a>
                 </li>
-                <li>
-<!--                    <a class="app-menu__item" href="{% url 'ledgerapp:calendar' %}"><i class="app-menu__icon fa fa-calendar"></i><span class="app-menu__label">달력</span></a>-->
-                </li>
                 <li class="treeview">
                     <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">입출금 장부</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                     <ul class="treeview-menu">
@@ -102,7 +94,9 @@
                         </li>
                     </ul>
                 </li>
-
+                <li>
+                    <a class="app-menu__item active" href="{% url 'weatherapp:yesterday' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">어제 날씨</span></a>
+                </li>
                  <li class="treeview">
                     <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">날씨 분석</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                     <ul class="treeview-menu">
@@ -119,24 +113,13 @@
                         <li>
                             <a class="treeview-item" href="{% url 'weatherapp:insolation-graph' %}"><i class="icon fa fa-circle-o"></i>일조량</a>
                         </li>
-                        <li>
-                            <a class="treeview-item" href="{% url 'weatherapp:yesterday' %}"><i class="icon fa fa-circle-o"></i>어제 날씨</a>
-                        </li>
                     </ul>
                 </li>
-                <li class="treeview">
-                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Blog</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a class="treeview-item" href="{% url 'blogapp:post-list' %}"><i class="icon fa fa-circle-o"></i>전체</a>
-                        </li>
-                        <li>
-                            <a class="treeview-item" href="{% url 'blogapp:post-list' %}"><i class="icon fa fa-circle-o"></i>수입</a>
-                        </li>
-                        <li>
-                            <a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>지출</a>
-                        </li>
-                    </ul>
+                <li>
+                    <a class="app-menu__item active" href="{% url 'blogapp:post-list' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">팁 게시판</span></a>
+                </li>
+                <li>
+                    <a class="app-menu__item active" href="{% url 'blogquestionapp:post-list' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">질문 게시판</span></a>
                 </li>
             </ul>
         </aside>
