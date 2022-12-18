@@ -31,6 +31,8 @@ urlpatterns = [
     path("diary/", include("calendarapp.urls")),
     path("weather/", include("weather.urls")),
     path("ledger/", include("ledgerapp.urls")),
+    path("blog", include("blogapp.urls")),
+    path('markdownx/', include('markdownx.urls')),
     path("", include("forcastapp.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

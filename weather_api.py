@@ -19,8 +19,8 @@ def parser():
 
     # 전날 자료까지만 제공
 
-    sday = 20211215
-    eday = 20221215
+    sday = 20221217
+    eday = 20221217
 
     params = f'?{quote_plus("ServiceKey")}={servicekey}&' + urlencode({
         quote_plus("pageNo"): "1",  # 페이지 번호 // default : 1

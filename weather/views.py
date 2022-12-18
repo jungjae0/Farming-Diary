@@ -1,4 +1,6 @@
+import datetime
 import json
+import time
 import urllib
 import warnings
 from urllib.parse import quote_plus, urlencode
@@ -17,9 +19,13 @@ import requests
 from datetime import date, timedelta
 
 def tavg(request):
-
-    c_year = date.today() - timedelta(1)
-    l_year = date.today() - timedelta(366)
+    now = time
+    if now.localtime().tm_hour < 11:
+        c_year = date.today() - timedelta(2)
+        l_year = date.today() - timedelta(367)
+    else:
+        c_year = date.today() - timedelta(1)
+        l_year = date.today() - timedelta(366)
 
     dataSource = OrderedDict()
 
@@ -61,9 +67,13 @@ def tavg(request):
 
 
 def thum(request):
-
-    c_year = date.today() - timedelta(1)
-    l_year = date.today() - timedelta(366)
+    now = time
+    if now.localtime().tm_hour < 11:
+        c_year = date.today() - timedelta(2)
+        l_year = date.today() - timedelta(367)
+    else:
+        c_year = date.today() - timedelta(1)
+        l_year = date.today() - timedelta(366)
 
     dataSource = OrderedDict()
 
@@ -100,9 +110,13 @@ def thum(request):
     })
 
 def trainfall(request):
-
-    c_year = date.today() - timedelta(1)
-    l_year = date.today() - timedelta(366)
+    now = time
+    if now.localtime().tm_hour < 11:
+        c_year = date.today() - timedelta(2)
+        l_year = date.today() - timedelta(367)
+    else:
+        c_year = date.today() - timedelta(1)
+        l_year = date.today() - timedelta(366)
 
     dataSource = OrderedDict()
 
@@ -139,9 +153,13 @@ def trainfall(request):
     })
 
 def sunshine(request):
-
-    c_year = date.today() - timedelta(1)
-    l_year = date.today() - timedelta(366)
+    now = time
+    if now.localtime().tm_hour < 11:
+        c_year = date.today() - timedelta(2)
+        l_year = date.today() - timedelta(367)
+    else:
+        c_year = date.today() - timedelta(1)
+        l_year = date.today() - timedelta(366)
 
     dataSource = OrderedDict()
 
@@ -173,14 +191,18 @@ def sunshine(request):
     chartConfig["theme"] = "fusion"
 
     column2D = FusionCharts("column2d", "myFirstChart", "600", "400", "myFirstchart-container", "json", dataSource)
-    return render(request, 'weather/yesterday-weather.html', {
+    return render(request, 'weather/sunshine.html', {
         'output': column2D.render()
     })
 
 
 def yesterday_weather(request):
 
-    c_year = date.today() - timedelta(1)
+    now = time
+    if now.localtime().tm_hour < 11:
+        c_year = date.today() - timedelta(2)
+    else:
+        c_year = date.today() - timedelta(1)
 
     df = pd.DataFrame(list(Information.objects.all().values()))
     for i in range(1, 5):
