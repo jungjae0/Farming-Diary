@@ -6,6 +6,8 @@ from markdownx.models import MarkdownxField
 from markdownx.utils import markdown
 import os
 
+from uuslug import uuslug
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -18,19 +20,22 @@ class Tag(models.Model):
         return f'/blogtip/tag/{self.slug}/'
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return f'/blogtip/category/{self.slug}/'
-
-    class Meta:
-        verbose_name_plural = 'categories'
-
+# class Category(models.Model):
+#     name = models.CharField(max_length=50, unique=True)
+#     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     def get_absolute_url(self):
+#         return f'/blogtip/category/{self.slug}/'
+#
+#     class Meta:
+#         verbose_name_plural = 'categories'
+#
+#     def save(self, *args, **kwargs):
+#         self.slug = uuslug(self.name, instance=self)
+#         super(Category, self).save(*args, **kwargs)
 
 class Post(models.Model):
     title = models.CharField(max_length=25)
@@ -45,7 +50,7 @@ class Post(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
 
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    # category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):

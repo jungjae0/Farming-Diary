@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% block title %}
 품목 추가 - 농장 관리 일정
@@ -18,7 +18,11 @@
   {% csrf_token %}
   <table class="form form-table">
     {{ form }}
-    <tr><td colspan="2"><button type="submit" class="btn btn-info right" onclick="closeSelf();"> Submit </button></td></tr>
+    <tr><td colspan="2"><button type="submit" class="btn btn-primary right"> 추가하기 </button>
+    <a class="btn btn-primary left" href="{% url 'calendarapp:event-new' %}" title="view">
+        돌아가기
+      </a>
+    </td></tr>
   </table>
 </form>
 

@@ -1,33 +1,268 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% block title %}Weather Forcast{% endblock title %}
+{% block title %}날씨 예보{% endblock title %}
 
 {% block extracss %}
+<!--    <link rel="stylesheet" href="{% static 'forcastapp/css/style.css' %}">-->
+<script src="https://kit.fontawesome.com/a9d24cc8c1.js" crossorigin="anonymous"></script>
+<style>
+
+    		/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+/*--reset--*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol,ul{list-style:none;margin:0px;padding:0px;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+/*--start editing from here--*/
+a{text-decoration:none;}
+.txt-rt{text-align:right;}/* text align right */
+.txt-lt{text-align:left;}/* text align left */
+.txt-center{text-align:center;}/* text align center */
+.float-rt{float:right;}/* float right */
+.float-lt{float:left;}/* float left */
+.clear{clear:both;}/* clear float */
+.pos-relative{position:relative;}/* Position Relative */
+.pos-absolute{position:absolute;}/* Position Absolute */
+.vertical-base{	vertical-align:baseline;}/* vertical align baseline */
+.vertical-top{	vertical-align:top;}/* vertical align top */
+nav.vertical ul li{	display:block;}/* vertical menu */
+nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
+img{max-width:100%;}
+/*--end reset--*/
+    .container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  *zoom: 1; }
+  .container:after {
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0; }
+  @media (min-width: 768px) {
+    .container {
+      width: 750px; } }
+  @media (min-width: 992px) {
+    .container {
+      width: 970px; } }
+  @media (min-width: 1200px) {
+    .container {
+      width: 1170px; } }
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  *zoom: 1; }
+  .container-fluid:after {
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0; }
+
+
+  .forecast-container {
+  width: 100%;
+  background: #323544;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-top: 100px;
+  margin-bottom: 50px; }
+  .forecast-container .forecast {
+    display: table-cell;
+    vertical-align: top; }
+    .forecast-container .forecast:nth-child(even) {
+      background-color: #262936; }
+    @media screen and (max-width: 990px) {
+      .forecast-container .forecast {
+        display: block;
+        width: 16.6667%;
+        float: left; } }
+    .forecast-container .forecast.today {
+      width: 420px; }
+      .forecast-container .forecast.today .forecast-header {
+        *zoom: 1; }
+        .forecast-container .forecast.today .forecast-header:after {
+          content: " ";
+          clear: both;
+          display: block;
+          overflow: hidden;
+          height: 0; }
+        .forecast-container .forecast.today .forecast-header .day {
+          float: left; }
+        .forecast-container .forecast.today .forecast-header .date {
+          float: right; }
+      .forecast-container .forecast.today .forecast-content {
+        text-align: left;
+        padding-top: 30px;
+        padding-bottom: 30px; }
+      .forecast-container .forecast.today .location {
+        font-size: 18px;
+        font-size: 1.2857142857em;
+        font-weight: 400; }
+      .forecast-container .forecast.today .degree .num, .forecast-container .forecast.today .degree .forecast-icon {
+        display: inline-block;
+        vertical-align: middle; }
+      .forecast-container .forecast.today .degree .num {
+        font-size: 90px;
+        font-size: 6.4285714286rem;
+        margin-right: 30px; }
+      .forecast-container .forecast.today span {
+        margin-right: 20px; }
+        .forecast-container .forecast.today span img {
+          margin-right: 5px;
+          vertical-align: middle; }
+      @media screen and (max-width: 990px) {
+        .forecast-container .forecast.today {
+          display: block;
+          width: 100%; } }
+    .forecast-container .forecast .forecast-header {
+      background: rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      text-align: center;
+      font-weight: 400; }
+    .forecast-container .forecast .forecast-icon {
+      height: 50px; }
+    .forecast-container .forecast .forecast-content {
+      padding: 50px 20px 10px;
+      text-align: center; }
+      .forecast-container .forecast .forecast-content .forecast-icon {
+        margin-bottom: 20px; }
+      .forecast-container .forecast .forecast-content .degree {
+        font-size: 24px;
+        font-size: 1.7142857143em;
+        color: white;
+        font-weight: 700; }
+      .forecast-container .forecast .forecast-content small {
+        font-size: 16px;
+        font-size: 1.1428571429em; }
+
+</style>
+
+
 {% endblock extracss %}
 
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fas fa-sun-o"></i>&nbsp;날씨 예보</h1>
+    </div>
+{% endblock breadcrumb %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="title row">
-            <h3>{{ date }}</h3>
 
+<!--<div class="main">-->
+<!--<div class="forecast-table">-->
+    <div class="container">
+        <div class="forecast-container">
+            <div class="today forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date}}</div>
+                    <div class="date text-white">{% now "l" %}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="location text-white">서울</div>
+                    <div class="degree text-white">
+                        <div class="num text-white">{{temp}}°C</div>
+                        <div class="forecast-icon">
+                            <img src="http://openweathermap.org/img/wn/{{icon}}@2x.png" alt="" width=90>
+                        </div>
+                    </div>
+                    <span class="text-white"><img style="height: 25px; width: 25px" src="{%static 'images/cloud.png' %}"
+                            alt="">{{cloud}}%</span>
+                    <span class="text-white"><img src="{%static 'images/wind-direction.png' %}" alt="">{{wind}}km/h</span>
+                    <span class="text-white"><img src="{%static 'images/compass.png' %}" alt="degree">{{degree}}<sup> o</sup></span>
+                    </br>
+                    <span class="text-white">{{status|capfirst }}</span>
+                </div>
+            </div>
+            <div class="forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date1}}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        <img src="http://openweathermap.org/img/wn/{{icon1}}@2x.png" alt="" width=48>
+                    </div>
+                    <div class="degree">{{temp_max1}}°C</div>
+                    <small class="text-white">{{temp_min1}}°C</small>
+                </div>
+            </div>
+            <div class="forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date2}}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        <img src="http://openweathermap.org/img/wn/{{icon2}}@2x.png" alt="" width=48>
+                    </div>
+                    <div class="degree text-white">{{temp_max2}}°C</div>
+                    <small class="text-white">{{temp_min2}}°C</small>
+                </div>
+            </div>
+            <div class="forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date3}}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        <img src="http://openweathermap.org/img/wn/{{icon3}}@2x.png" alt="" width=48>
+                    </div>
+                    <div class="degree text-white">{{temp_max3}}°C</div>
+                    <small class="text-white">{{temp_min3}}°C</small>
+                </div>
+            </div>
+            <div class="forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date4}}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        <img src="http://openweathermap.org/img/wn/{{icon4}}@2x.png" alt="" width=48>
+                    </div>
+                    <div class="degree text-white">{{temp_max4}}°C</div>
+                    <small class="text-white">{{temp_min4}}°C</small>
+                </div>
+            </div>
+            <div class="forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date5}}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        <img src="http://openweathermap.org/img/wn/{{icon5}}@2x.png" alt="" width=48>
+                    </div>
+                    <div class="degree text-white">{{temp_max5}}°C</div>
+                    <small class="text-white">{{temp_min5}}°C</small>
+                </div>
+            </div>
+            <div class="forecast">
+                <div class="forecast-header">
+                    <div class="day text-white">{{date6}}</div>
+                </div> <!-- .forecast-header -->
+                <div class="forecast-content">
+                    <div class="forecast-icon">
+                        <img src="http://openweathermap.org/img/wn/{{icon6}}@2x.png" alt="" width=48>
+                    </div>
+                    <div class="degree text-white">{{temp_max6}}°C</div>
+                    <small class="text-white">{{temp_min6}}°C</small>
+                </div>
+            </div>
         </div>
-
-        <p>{{ city_name }}</p>
-        <p>{{ temp }}</p>
-        </hr>
-        <p>{{ date1 }}</p>
-        <p>{{ temp_max1 }}</p>
-        </hr>
-        <p>{{ date2 }}</p>
-        <p>{{ temp_max2 }}</p>
-        </hr>
-        <p>{{ date3 }}</p>
-        <p>{{ temp_max3 }}</p>
-        </hr>
-        <p>{{ date4 }}</p>
-        <p>{{ temp_max4 }}</p>
     </div>
+</div>
 </div>
 {% endblock content %}

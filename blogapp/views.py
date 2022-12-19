@@ -9,8 +9,8 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 
-from .models import Post, Category, Tag, Comment
-from .forms import CommentForm, CategoryForm
+from .models import Post, Tag, Comment #, Category,
+from .forms import CommentForm #, CategoryForm
 
 
 
@@ -21,8 +21,8 @@ class PostList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data()
-        context['categories'] = Category.objects.all()
-        context['no_category_post_count'] = Post.objects.filter(category=None).count()
+        # context['categories'] = Category.objects.all()
+        # context['no_category_post_count'] = Post.objects.filter(category=None).count()
         return context
 
 
@@ -31,15 +31,16 @@ class PostDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data()
-        context['categories'] = Category.objects.all()
-        context['no_category_post_count'] = Post.objects.filter(category=None).count()
+        # context['categories'] = Category.objects.all()
+        # context['no_category_post_count'] = Post.objects.filter(category=None).count()
         context['comment_form'] = CommentForm
         return context
 
 
 class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post
-    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    # fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload']
 
     def test_func(self):
         return self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_authenticated
@@ -73,7 +74,8 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
-    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    # fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload']
 
     template_name = 'blogapp/post_update_form.html'
 
@@ -114,38 +116,38 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
         return response
 
 
-def category_page(request, slug):
-    if slug == 'no_category':
-        category = '미분류'
-        post_list = Post.objects.filter(category=None)
-    else:
-        category = Category.objects.get(slug=slug)
-        post_list = Post.objects.filter(category=category)
-
-    return render(
-        request,
-        'blogapp/post_list.html',
-        {
-            'post_list': post_list,
-            'categories': Category.objects.all(),
-            'no_category_post_count': Post.objects.filter(category=None).count(),
-            'category': category,
-        }
-    )
+# def category_page(request, slug):
+#     if slug == 'no_category':
+#         category = '미분류'
+#         post_list = Post.objects.filter(category=None)
+#     else:
+#         category = Category.objects.get(slug=slug)
+#         post_list = Post.objects.filter(category=category)
+#
+#     return render(
+#         request,
+#         'blogapp/post_list.html',
+#         {
+#             'post_list': post_list,
+#             'categories': Category.objects.all(),
+#             'no_category_post_count': Post.objects.filter(category=None).count(),
+#             'category': category,
+#         }
+#     )
 
 # @login_required(login_url="signup")
-def create_category(request, slug):
-    form = CategoryForm(request.POST or None)
-    if request.POST and form.is_valid():
-        name = form.cleaned_data["name"]
-        Category.objects.get_or_create(
-            name = name,
-            slug = slug,
-        )
-
-
-        # return HttpResponseRedirect(reverse("blogapp:create-post"))
-    return render(request, "blogapp/blog-category.html", {"form": form})
+# def create_category(request, slug):
+#     form = CategoryForm(request.POST or None)
+#     if request.POST and form.is_valid():
+#         name = form.cleaned_data["name"]
+#         Category.objects.get_or_create(
+#             name = name,
+#             slug = slug,
+#         )
+#
+#
+#         # return HttpResponseRedirect(reverse("blogapp:create-post"))
+#     return render(request, "blogapp/blog-category.html", {"form": form})
 
 def tag_page(request, slug):
     tag = Tag.objects.get(slug=slug)
@@ -157,8 +159,8 @@ def tag_page(request, slug):
         {
             'post_list': post_list,
             'tag': tag,
-            'categories': Category.objects.all(),
-            'no_category_post_count': Post.objects.filter(category=None).count(),
+            # 'categories': Category.objects.all(),
+            # 'no_category_post_count': Post.objects.filter(category=None).count(),
         }
     )
 

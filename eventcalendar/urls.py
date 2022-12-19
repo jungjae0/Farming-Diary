@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from .views import question
+
 # from forcastapp.views import forcast
 
 # from .views import DashboardView
@@ -35,7 +37,8 @@ urlpatterns = [
     path("blogquestion/", include("blogquestionapp.urls")),
     path('markdownx/', include('markdownx.urls')),
     path("", include("forcastapp.urls")),
+    path('question/', question)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

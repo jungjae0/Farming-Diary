@@ -52,12 +52,13 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get("month", None))
         cal = Calendar(d.year, d.month)
-        html_cal = cal.formatmonth(withyear=True)
+        html_cal = cal.formatmonth(withyear=True, user=self.request.user)
         context["calendar"] = mark_safe(html_cal)
         context["prev_month"] = prev_month(d)
         context["next_month"] = next_month(d)
         context["running_events"] = self.model.objects.get_running_events(user=self.request.user)
         context["expected_events"] = self.model.objects.get_expected_events(user=self.request.user)
+        # context["user"] = self.model.objects.all()
         return context
 
 
@@ -105,10 +106,10 @@ class EventEdit(generic.UpdateView):
     template_name = "calendarapp/event-edit.html"
     success_url = reverse_lazy("calendarapp:calendar")
 
-class EventDeleteView(generic.DeleteView):
-    model = Event
-    template_name = "calendarapp/event_delete.html"
-    success_url = reverse_lazy("calendarapp:calendar")
+# class EventDeleteView(generic.DeleteView):
+#     model = Event
+#     template_name = "calendarapp/event_delete.html"
+#     success_url = reverse_lazy("calendarapp:calendar")
 
 def delete_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
@@ -119,6 +120,16 @@ def delete_event(request, pk):
     else:
         raise PermissionDenied
 
+def delete_event1(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    # post = event.post
+    if request.user.is_authenticated:
+        event.delete()
+        return redirect(event.get_absolute_url3())
+    else:
+        raise PermissionDenied
+
+
 @login_required(login_url="signup")
 def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
@@ -128,7 +139,6 @@ def event_details(request, event_id):
 class DashboardView(LoginRequiredMixin, View):
     login_url = "accounts:signin"
     template_name = "calendarapp/dashboard.html"
-
 
     def get(self, request, *args, **kwargs):
         events = Event.objects.get_all_events(user=request.user)

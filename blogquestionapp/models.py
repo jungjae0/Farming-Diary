@@ -18,18 +18,18 @@ class QuestionTag(models.Model):
         return f'/blogquestion/tag/{self.slug}/'
 
 
-class QuestionCategory(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return f'/blogquestion/category/{self.slug}/'
-
-    class Meta:
-        verbose_name_plural = 'categories'
+# class QuestionCategory(models.Model):
+#     name = models.CharField(max_length=50, unique=True)
+#     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     def get_absolute_url(self):
+#         return f'/blogquestion/category/{self.slug}/'
+#
+#     class Meta:
+#         verbose_name_plural = 'categories'
 
 
 class QuestionPost(models.Model):
@@ -45,7 +45,7 @@ class QuestionPost(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
 
-    category = models.ForeignKey(QuestionCategory, null=True, blank=True, on_delete=models.SET_NULL)
+    # category = models.ForeignKey(QuestionCategory, null=True, blank=True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(QuestionTag, blank=True)
 
     def __str__(self):

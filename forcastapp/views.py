@@ -32,19 +32,19 @@ def result(request):
             'date6':w_dataset['list'][8]["dt_txt"],
 
 
-            "temp": round(w_dataset["list"][2]["main"]["temp"] -273.0),
-            "temp_min1":math.floor(w_dataset["list"][3]["main"]["temp_min"] -273.0),
-            "temp_max1": math.ceil(w_dataset["list"][3]["main"]["temp_max"] -273.0),
-            "temp_min2":math.floor(w_dataset["list"][4]["main"]["temp_min"] -273.0),
-            "temp_max2": math.ceil(w_dataset["list"][4]["main"]["temp_max"] -273.0),
-            "temp_min3":math.floor(w_dataset["list"][5]["main"]["temp_min"] -273.0),
-            "temp_max3": math.ceil(w_dataset["list"][5]["main"]["temp_max"] -273.0),
-            "temp_min4":math.floor(w_dataset["list"][6]["main"]["temp_min"] -273.0),
-            "temp_max4": math.ceil(w_dataset["list"][6]["main"]["temp_max"] -273.0),
-            "temp_min5":math.floor(w_dataset["list"][7]["main"]["temp_min"] -273.0),
-            "temp_max5": math.ceil(w_dataset["list"][7]["main"]["temp_max"] -273.0),
-            "temp_min6":math.floor(w_dataset["list"][8]["main"]["temp_min"] -273.0),
-            "temp_max6": math.ceil(w_dataset["list"][8]["main"]["temp_max"] -273.0),
+            "temp": round(w_dataset["list"][2]["main"]["temp"] -273.15),
+            "temp_min1":math.floor(w_dataset["list"][3]["main"]["temp_min"] -273.15),
+            "temp_max1": math.ceil(w_dataset["list"][3]["main"]["temp_max"] -273.15),
+            "temp_min2":math.floor(w_dataset["list"][4]["main"]["temp_min"] -273.15),
+            "temp_max2": math.ceil(w_dataset["list"][4]["main"]["temp_max"] -273.15),
+            "temp_min3":math.floor(w_dataset["list"][5]["main"]["temp_min"] -273.15),
+            "temp_max3": math.ceil(w_dataset["list"][5]["main"]["temp_max"] -273.15),
+            "temp_min4":math.floor(w_dataset["list"][6]["main"]["temp_min"] -273.15),
+            "temp_max4": math.ceil(w_dataset["list"][6]["main"]["temp_max"] -273.15),
+            "temp_min5":math.floor(w_dataset["list"][7]["main"]["temp_min"] -273.15),
+            "temp_max5": math.ceil(w_dataset["list"][7]["main"]["temp_max"] -273.15),
+            "temp_min6":math.floor(w_dataset["list"][8]["main"]["temp_min"] -273.15),
+            "temp_max6": math.ceil(w_dataset["list"][8]["main"]["temp_max"] -273.15),
 
 
             "pressure":w_dataset["list"][2]["main"]["pressure"],
@@ -69,8 +69,8 @@ def result(request):
 
             "city_name":"Not Found, Check your spelling..."
             }
-        print(context)
-        print(w_dataset)
+        print(context['date'])
+        # print(w_dataset)
         return render(request, "forcastapp/weather-forcast.html", context)
 
     else:

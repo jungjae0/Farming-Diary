@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.urls import reverse
 
@@ -82,9 +84,12 @@ class Event(EventAbstract):
         return reverse("calendarapp:event-detail", args=[self.id])
 
     def get_absolute_url2(self):
-        return reverse("calendarapp:calendar")
+        return reverse("calendarapp:dashboard")
+
+    def get_absolute_url3(self):
+        return reverse("calendarapp:all-events")
 
     @property
     def get_html_url(self):
-        url = reverse("calendarapp:event-detail", args=[self.id])
-        return f'<a href="{url}"> {self.item} </a>'
+        url = reverse("calendarapp:event-detail", args=[self.id,])
+        return f'<a href="{url}"> {self.title}-{self.item} </a>'

@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}
-Event
+입출금 장부 작성
 {% endblock %}
 
 {% block breadcrumb %}
@@ -11,7 +11,7 @@ Event
 {% endblock breadcrumb %}
 
 {% block content %}
-
+<div class="container">
 <form method="post">
   {% csrf_token %}
   <table class="form form-table">
@@ -23,7 +23,7 @@ Event
           <div class="col-4">
             {{ form.item | as_crispy_field }}
 
-      <a class="btn btn-info" href="#" title="view" onclick="showPopup('{% url 'ledgerapp:item-new' %}')">
+      <a class="btn btn-primary" href="{% url 'ledgerapp:item-new' %}" title="view">
           품목 추가하기
       </a>
               </div>
@@ -46,13 +46,10 @@ Event
           </div>
       </div>
     {{ form.description | as_crispy_field }}
-    <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
+      <hr>
+    <button type="submit" class="btn btn-primary float-right"> 장부 추가 </button>
   </table>
 </form>
+</div>
 
 {% endblock %}
-{% block extrascripts %}
-<script type="text/javascript">
-function showPopup(target) { window.open(target, "a", "width=500, height=600, left=100, top=50"); }
-</script>
-{% endblock extrascripts %}

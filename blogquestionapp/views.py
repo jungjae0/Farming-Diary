@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
-from .models import QuestionPost, QuestionCategory, QuestionTag, QuestionComment
+from .models import QuestionPost, QuestionTag, QuestionComment
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from .forms import QuestionCommentForm
@@ -16,8 +16,8 @@ class QuestionPostList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(QuestionPostList, self).get_context_data()
-        context['categories'] = QuestionCategory.objects.all()
-        context['no_category_post_count'] = QuestionPost.objects.filter(category=None).count()
+        # context['categories'] = QuestionCategory.objects.all()
+        # context['no_category_post_count'] = QuestionPost.objects.filter(category=None).count()
         return context
 
 
@@ -26,15 +26,16 @@ class QuestionPostDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(QuestionPostDetail, self).get_context_data()
-        context['categories'] = QuestionCategory.objects.all()
-        context['no_category_post_count'] = QuestionPost.objects.filter(category=None).count()
+        # context['categories'] = QuestionCategory.objects.all()
+        # context['no_category_post_count'] = QuestionPost.objects.filter(category=None).count()
         context['comment_form'] = QuestionCommentForm
         return context
 
 
 class QuestionPostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = QuestionPost
-    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    # fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload']
 
     def test_func(self):
         return self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_authenticated
@@ -68,7 +69,8 @@ class QuestionPostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 class QuestionPostUpdate(LoginRequiredMixin, UpdateView):
     model = QuestionPost
-    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    # fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
+    fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload']
 
     template_name = 'blogquestionapp/questionpost_update_form.html'
 
@@ -109,24 +111,24 @@ class QuestionPostUpdate(LoginRequiredMixin, UpdateView):
         return response
 
 
-def category_page(request, slug):
-    if slug == 'no_category':
-        category = '미분류'
-        post_list = QuestionPost.objects.filter(category=None)
-    else:
-        category = QuestionCategory.objects.get(slug=slug)
-        post_list = QuestionPost.objects.filter(category=category)
-
-    return render(
-        request,
-        'blogquestionapp/questionpost_list.html',
-        {
-            'post_list': post_list,
-            'categories': QuestionCategory.objects.all(),
-            'no_category_post_count': QuestionPost.objects.filter(category=None).count(),
-            'category': category,
-        }
-    )
+# def category_page(request, slug):
+#     if slug == 'no_category':
+#         category = '미분류'
+#         post_list = QuestionPost.objects.filter(category=None)
+#     else:
+#         category = QuestionCategory.objects.get(slug=slug)
+#         post_list = QuestionPost.objects.filter(category=category)
+#
+#     return render(
+#         request,
+#         'blogquestionapp/questionpost_list.html',
+#         {
+#             'post_list': post_list,
+#             'categories': QuestionCategory.objects.all(),
+#             'no_category_post_count': QuestionPost.objects.filter(category=None).count(),
+#             'category': category,
+#         }
+#     )
 
 
 def tag_page(request, slug):
@@ -138,8 +140,8 @@ def tag_page(request, slug):
         {
             'questionpost_list': post_list,
             'tag': tag,
-            'categories': QuestionCategory.objects.all(),
-            'no_category_post_count': QuestionPost.objects.filter(category=None).count(),
+            # 'categories': QuestionCategory.objects.all(),
+            # 'no_category_post_count': QuestionPost.objects.filter(category=None).count(),
         }
     )
 

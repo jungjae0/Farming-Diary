@@ -11,7 +11,7 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-
+<div class="container">
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <table class="form form-table">
@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-4">
                 {{ form.item | as_crispy_field }}
-                <a class="btn btn-primary btn-sm" href="#" title="view" onclick="showPopup('{% url 'calendarapp:item-new' %}')">
+                <a class="btn btn-primary" href="{% url 'calendarapp:item-new' %}" title="view">
                     품목 추가
                 </a>
             </div>
@@ -40,13 +40,10 @@
         </div>
         {{ form.description | as_crispy_field }}
         {{ form.image | as_crispy_field }}
-        <tr><td colspan="2"><button type="submit" class="btn btn-primary right"> Submit </button></td></tr>
+          <hr>
+        <button type="submit" class="btn btn-primary float-right"> 일정 추가 </button>
       </table>
     </form>
+    </div>
 {% endblock %}
 
-{% block extrascripts %}
-<script type="text/javascript">
-function showPopup(target) { window.open(target, "a", "width=300, height=100, left=300, top=200"); }
-</script>
-{% endblock extrascripts %}

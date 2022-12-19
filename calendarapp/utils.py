@@ -1,5 +1,8 @@
 # calendarapp/utils.py
 from calendar import HTMLCalendar
+
+from django.http import request
+
 from .models import Event
 
 
@@ -29,10 +32,15 @@ class Calendar(HTMLCalendar):
 
     # formats a month as a table
     # filter events by year and month
-    def formatmonth(self, withyear=True):
-        events = Event.objects.filter(
-            start_time__year=self.year, start_time__month=self.month
-        )
+    def formatmonth(self, withyear=True, user=None):
+        if user is None:
+            events = Event.objects.filter(
+                start_time__year=self.year, start_time__month=self.month,
+            )
+        else:
+            events = Event.objects.filter(
+                start_time__year=self.year, start_time__month=self.month, user=user
+            )
         cal = (
             '<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         )  # noqa
@@ -42,4 +50,5 @@ class Calendar(HTMLCalendar):
         cal += f"{self.formatweekheader()}\n"
         for week in self.monthdays2calendar(self.year, self.month):
             cal += f"{self.formatweek(week, events)}\n"
+        print(events)
         return cal

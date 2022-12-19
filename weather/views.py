@@ -328,7 +328,7 @@ def tavg(request):
     dataSource = OrderedDict()
 
     chartConfig = OrderedDict()
-    chartConfig["caption"] = "작년 날씨와 최근 날씨 비교"
+    chartConfig["caption"] = "작년 VS 올해 : 온도"
     if l_tavg > c_tavg:
         chartConfig["subCaption"] = f"1년 전 오늘 대비 {round(c_tavg - l_tavg, 3)}°C 감소"
     elif l_tavg == c_tavg:
@@ -411,7 +411,7 @@ def thum(request):
     dataSource = OrderedDict()
 
     chartConfig = OrderedDict()
-    chartConfig["caption"] = "작년 날씨와 최근 날씨 비교"
+    chartConfig["caption"] = "작년 VS 올해 : 습도"
     if l_thum > c_thum:
         chartConfig["subCaption"] = f"1년 전 오늘 대비 {round(c_thum - l_thum, 3)}% 감소"
     elif l_thum == c_thum:
@@ -497,7 +497,7 @@ def trainfall(request):
     dataSource = OrderedDict()
 
     chartConfig = OrderedDict()
-    chartConfig["caption"] = "작년 날씨와 최근 날씨 비교"
+    chartConfig["caption"] = "작년 VS 올해 : 강수량"
     if l_rain > c_rain:
         chartConfig["subCaption"] = f"1년 전 오늘 대비 {round(float(c_rain) - float(l_rain), 3)}mm 감소"
     elif l_rain == c_rain:

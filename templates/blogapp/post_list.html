@@ -6,19 +6,20 @@
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fas fa-pen"></i>&nbsp;팁 게시판</h1>
+        <h1><i class="fa-solid fa-pen-to-square"></i>&nbsp;정보 게시판</h1>
     </div>
 {% if user.is_authenticated %}
     <div align="right">
         <a class="btn btn-primary" href="{% url 'blogapp:create-post' %}"><i class="fas fa-pen"></i>&nbsp;작성하기</a>
     </div>
 {% endif %}
-{% endblock breadcrumb %}
 
+{% endblock breadcrumb %}
+{% block head_title %} 정보 게시판{% endblock %}
 {% block content %}
     <h1>
         {% if search_info %}<small class="text-muted">{{ search_info }}</small>{% endif %}
-        {% if category %}<span class="badge badge-secondary">{{ category }}</span>{% endif %}
+<!--        {% if category %}<span class="badge badge-secondary">{{ category }}</span>{% endif %}-->
         {% if tag %}<span class="badge badge-light"><i class="fas fa-tags"></i>{{ tag }} ({{ tag.post_set.count }})</span>{% endif %}
     </h1>
 
@@ -35,11 +36,11 @@
                         {% endif %}
 
                         <div class="card-body">
-                            {% if p.category %}
-                                <span class="badge badge-secondary float-top">{{ p.category }}</span>
-                            {% else %}
-                                <span class="badge badge-secondary float-top">미분류</span>
-                            {% endif %}
+<!--                            {% if p.category %}-->
+<!--                                <span class="badge badge-secondary float-top">{{ p.category }}</span>-->
+<!--                            {% else %}-->
+<!--                                <span class="badge badge-secondary float-top">미분류</span>-->
+<!--                            {% endif %}-->
 
                             <h4 class="card-title">{{ p.title }}</h4>
 

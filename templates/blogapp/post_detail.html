@@ -7,7 +7,7 @@
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fas fa-pen"></i>&nbsp;팁 게시판 상세내용</h1>
+        <h1><i class="fa-solid fa-pen-to-square"></i>&nbsp;정보 게시물 상세내용</h1>
     </div>
     {% if user.is_authenticated and user == post.author %}
         <a class="btn btn-primary float-right" href="{% url 'blogapp:update-post' post.pk %}" role="button"><i class="fas fa-pen"></i>&nbsp;수정하기
@@ -16,18 +16,18 @@
 {% endblock breadcrumb %}
 
 {% block head_title %}
-    {{ post.title }} - Blog
+    정보 게시판 - {{ post.title }}
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
     <div id="post-area">
-        {% if post.category %}
-            <span class="badge badge-secondary float-right">{{ post.category }}</span>
-        {% else %}
-            <span class="badge badge-secondary float-right">미분류</span>
-        {% endif %}
+<!--        {% if post.category %}-->
+<!--            <span class="badge badge-secondary float-right">{{ post.category }}</span>-->
+<!--        {% else %}-->
+<!--            <span class="badge badge-secondary float-right">미분류</span>-->
+<!--        {% endif %}-->
 
         <!-- Title -->
         <h1 class="mt-4">{{ post.title }}</h1>

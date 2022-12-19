@@ -1,10 +1,14 @@
 {% extends 'blogapp/base_full_width.html' %}
 {% load crispy_forms_tags %}
-{% block head_title %}Edit Comment - Blog{% endblock %}
+{% block head_title %}정보 게시판 - 댓글 수정{% endblock %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-pen-to-square"></i>&nbsp;정보 게시물 댓글 수정</h1>
+    </div>
+{% endblock breadcrumb %}
 
 {% block content %}
-    <h1>Edit Comment</h1>
-    <hr/>
     <form method="post" id="comment-form">{% csrf_token %}
         {{ form | crispy }}
         <br/>

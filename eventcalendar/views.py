@@ -19,3 +19,7 @@
 #             "latest_events": latest_events,
 #         }
 #         return render(request, self.template_name, context)
+
+from django.shortcuts import render
+def question(request):
+    return render(request, 'mail.html')
