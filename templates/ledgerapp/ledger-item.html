@@ -12,8 +12,24 @@ Event
   {% csrf_token %}
   <table class="form form-table">
     {{ form }}
-    <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
+    <tr><td colspan="2"><button type="submit" class="btn btn-info right" onclick="closeSelf();"> Submit </button></td></tr>
   </table>
 </form>
 
 {% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+function closeSelf(){
+    // do something
+
+    if(condition satisfied){
+       alert("conditions satisfied, submiting the form.");
+       document.forms['certform'].submit();
+       window.close();
+    }else{
+       alert("conditions not satisfied, returning to form");
+    }
+}
+</script>
+{% endblock extrascripts %}

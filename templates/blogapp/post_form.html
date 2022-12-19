@@ -2,18 +2,34 @@
 {% load crispy_forms_tags %}
 {% block head_title %}Create Post - Blog{% endblock %}
 
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-pen-to-square"></i>&nbsp;팁 게시물 작성</h1>
+    </div>
+{% endblock breadcrumb %}
+
 {% block content %}
-    <h1>Create New Post</h1>
-    <hr/>
+<div class="container">
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
         {{ form | crispy }}
+        <a class="btn btn-primary btn-sm" href="#" title="view" onclick="showPopup('{% url 'blogapp:category-new' %}')">
+            카테고리 추가
+        </a>
         <div id="div_id_tags_str">
             <label for="id_tags_str">Tags:</label>
             <input type="text" name="tags_str" id="id_tags_str" class="textinput textInput form-control">
         </div>
-        <br/>
+        <hr>
 
         <button type="submit" class="btn btn-primary float-right">Submit</button>
     </form>
     {{ form.media }}
+</div>
 {% endblock content%}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+function showPopup(target) { window.open(target, "a", "width=300, height=100, left=300, top=200"); }
+</script>
+{% endblock extrascripts %}

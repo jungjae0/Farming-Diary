@@ -1,21 +1,12 @@
-import datetime
-import json
-import time
-import urllib
-import warnings
-from urllib.parse import quote_plus, urlencode
-from urllib.request import urlopen
-import pandas as pd
-import orjson
 from django.shortcuts import render
-from django.http import HttpResponse
+
+from .models import Information
 
 from collections import OrderedDict
 from fusioncharts import FusionCharts
 
-from .models import Information
-
-import requests
+import time
+import pandas as pd
 from datetime import date, timedelta
 
 def tavg(request):
@@ -34,8 +25,6 @@ def tavg(request):
     for i in range(1, 5):
         df.iloc[:,-i] = pd.to_numeric(df.iloc[:,-i], errors='coerce')
 
-    # print(df.head())
-    # print(df.dtypes)
 
     chartConfig = OrderedDict()
 
@@ -61,9 +50,31 @@ def tavg(request):
     print(c_year.strftime('%Y-%m-%d'))
     print(l_year.strftime('%Y-%m-%d'))
     column2D = FusionCharts("column2d", "myFirstChart", "600", "400", "myFirstchart-container", "json", dataSource)
-    return render(request, 'weather/temperature.html', {
-     'output': column2D.render()
-    })
+
+    # now = time
+    # if now.localtime().tm_hour < 11:
+    #     c_year = date.today() - timedelta(2)
+    # else:
+    #     c_year = date.today() - timedelta(1)
+    #
+    # df = pd.DataFrame(list(Information.objects.all().values()))
+    # for i in range(1, 5):
+    #     df.iloc[:, -i] = pd.to_numeric(df.iloc[:, -i], errors='coerce')
+
+    today_tavg = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['tavg'].item()
+    today_thum = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['thum'].item()
+    today_trainfall = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['rainfall'].item()
+    today_sunshine = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['insolation'].item()
+
+    context = {
+        'yesterday_tavg': today_tavg,
+        'yesterday_thum': today_thum,
+        'yesterday_rainfall': today_trainfall,
+        'yesterday_sunshine': today_sunshine,
+        'output': column2D.render()
+    }
+
+    return render(request, 'weather/temperature.html', context)
 
 
 def thum(request):
@@ -105,9 +116,22 @@ def thum(request):
     chartConfig["theme"] = "fusion"
 
     column2D = FusionCharts("column2d", "myFirstChart", "600", "400", "myFirstchart-container", "json", dataSource)
-    return render(request, 'weather/humid.html', {
+
+    today_tavg = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['tavg'].item()
+    today_thum = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['thum'].item()
+    today_trainfall = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['rainfall'].item()
+    today_sunshine = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['insolation'].item()
+
+    context = {
+        'yesterday_tavg': today_tavg,
+        'yesterday_thum': today_thum,
+        'yesterday_rainfall': today_trainfall,
+        'yesterday_sunshine': today_sunshine,
         'output': column2D.render()
-    })
+    }
+
+
+    return render(request, 'weather/humid.html', context)
 
 def trainfall(request):
     now = time
@@ -137,7 +161,7 @@ def trainfall(request):
     dataSource["data"].append({"label": '작년', "value": today_trainfall})
     dataSource["data"].append({"label": '올해', "value": yesterday_trainfall})
 
-    chartConfig["caption"] = "작년 강우량과 현재 강우량 비교"
+    chartConfig["caption"] = "작년 강수량과 현재 강수량 비교"
     if today_trainfall < yesterday_trainfall:
         chartConfig["subCaption"] = f"1년 전 대비{round(-(today_trainfall - yesterday_trainfall),3)}mm 증가"
     elif today_trainfall == yesterday_trainfall:
@@ -148,9 +172,21 @@ def trainfall(request):
     chartConfig["theme"] = "fusion"
 
     column2D = FusionCharts("column2d", "myFirstChart", "600", "400", "myFirstchart-container", "json", dataSource)
-    return render(request, 'weather/rainfall.html', {
+
+    today_tavg = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['tavg'].item()
+    today_thum = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['thum'].item()
+    today_trainfall = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['rainfall'].item()
+    today_sunshine = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['insolation'].item()
+
+    context = {
+        'yesterday_tavg': today_tavg,
+        'yesterday_thum': today_thum,
+        'yesterday_rainfall': today_trainfall,
+        'yesterday_sunshine': today_sunshine,
         'output': column2D.render()
-    })
+    }
+
+    return render(request, 'weather/rainfall.html', context)
 
 def sunshine(request):
     now = time
@@ -191,22 +227,6 @@ def sunshine(request):
     chartConfig["theme"] = "fusion"
 
     column2D = FusionCharts("column2d", "myFirstChart", "600", "400", "myFirstchart-container", "json", dataSource)
-    return render(request, 'weather/sunshine.html', {
-        'output': column2D.render()
-    })
-
-
-def yesterday_weather(request):
-
-    now = time
-    if now.localtime().tm_hour < 11:
-        c_year = date.today() - timedelta(2)
-    else:
-        c_year = date.today() - timedelta(1)
-
-    df = pd.DataFrame(list(Information.objects.all().values()))
-    for i in range(1, 5):
-        df.iloc[:, -i] = pd.to_numeric(df.iloc[:, -i], errors='coerce')
 
     today_tavg = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['tavg'].item()
     today_thum = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['thum'].item()
@@ -218,6 +238,34 @@ def yesterday_weather(request):
         'yesterday_thum': today_thum,
         'yesterday_rainfall': today_trainfall,
         'yesterday_sunshine': today_sunshine,
+        'output': column2D.render()
     }
 
-    return render(request, 'weather/yesterday-weather.html', context)
+    return render(request, 'weather/sunshine.html', context)
+
+
+# def yesterday_weather(request):
+#
+#     now = time
+#     if now.localtime().tm_hour < 11:
+#         c_year = date.today() - timedelta(2)
+#     else:
+#         c_year = date.today() - timedelta(1)
+#
+#     df = pd.DataFrame(list(Information.objects.all().values()))
+#     for i in range(1, 5):
+#         df.iloc[:, -i] = pd.to_numeric(df.iloc[:, -i], errors='coerce')
+#
+#     today_tavg = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['tavg'].item()
+#     today_thum = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['thum'].item()
+#     today_trainfall = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['rainfall'].item()
+#     today_sunshine = df[df['date'] == f"{c_year.strftime('%Y-%m-%d')}"]['insolation'].item()
+#
+#     context = {
+#         'yesterday_tavg': today_tavg,
+#         'yesterday_thum': today_thum,
+#         'yesterday_rainfall': today_trainfall,
+#         'yesterday_sunshine': today_sunshine,
+#     }
+#
+#     return render(request, 'weather/yesterday-weather.html', context)

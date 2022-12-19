@@ -5,12 +5,23 @@
 <script src="https://kit.fontawesome.com/726bbd6862.js" crossorigin="anonymous"></script>
 {% endblock extracss %}
 
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fas fa-pen"></i>&nbsp;팁 게시판 상세내용</h1>
+    </div>
+    {% if user.is_authenticated and user == post.author %}
+        <a class="btn btn-primary float-right" href="{% url 'blogapp:update-post' post.pk %}" role="button"><i class="fas fa-pen"></i>&nbsp;수정하기
+        </a>
+    {% endif %}
+{% endblock breadcrumb %}
+
 {% block head_title %}
     {{ post.title }} - Blog
 {% endblock %}
 
 
 {% block content %}
+<div class="container">
     <div id="post-area">
         {% if post.category %}
             <span class="badge badge-secondary float-right">{{ post.category }}</span>
@@ -28,10 +39,6 @@
         </p>
 
         <hr>
-
-        {% if user.is_authenticated and user == post.author %}
-            <a class="btn btn-info btn-sm float-right" href="{% url 'blogapp:update-post' post.pk %}" role="button"><i class="fas fa-pen"></i>  Edit Post</a>
-        {% endif %}
 
         <!-- Date/Time -->
         <p>Posted on {{ post.created_at }}</p>
@@ -85,7 +92,7 @@
     <div id="comment-area">
         <!-- Comments Form -->
         <div class="card my-4">
-            <h5 class="card-header">Leave a Comment:</h5>
+            <h5 class="card-header">댓글</h5>
             <div class="card-body">
                 {% if user.is_authenticated %}
                     <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/">
@@ -93,10 +100,10 @@
                         <div class="form-group">
                             {{ comment_form | crispy }}
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">댓글 남기기</button>
                     </form>
                 {% else %}
-                    <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="#" data-toggle="modal" data-target="#loginModal">Log in and leave a comment</a>
+                    <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% url 'accounts:signin' %}">로그인이 필요합니다.</a>
                 {% endif %}
             </div>
         </div>
@@ -113,14 +120,14 @@
                                    class="btn btn-sm btn-info"
                                    id="comment-{{ comment.pk }}-update-btn"
                                    href="{% url 'blogapp:update-comment' comment.pk %}">
-                                    edit
+                                    수정
                                 </a>
                                 <a role="button"
                                    href="#"
                                    id="comment-{{ comment.pk }}-delete-modal-btn"
                                    class="btn btn-sm btn-danger"
                                    data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">
-                                    delete
+                                    삭제
                                 </a>
                             </div>
 
@@ -129,7 +136,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel">Are You Sure?</h5>
+                                            <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -138,8 +145,8 @@
                                             <del>{{ comment | linebreaks }}</del>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                            <a role="button" class="btn btn-danger" href="/blogtip/delete_comment/{{ comment.pk }}/">Delete</a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                            <a role="button" class="btn btn-danger" href="/blogtip/delete_comment/{{ comment.pk }}/">삭제</a>
                                         </div>
                                     </div>
                                 </div>
@@ -152,11 +159,12 @@
                         </h5>
                         <p>{{ comment.content | linebreaks }}</p>
                         {% if comment.created_at != comment.modified_at %}
-                            <p class="text-muted float-right"><small>Updated: {{ comment.modified_at }}</small></p>
+                            <p class="text-muted float-right"><small>수정: {{ comment.modified_at }}</small></p>
                         {% endif %}
                     </div>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
+</div>
 {% endblock content %}

@@ -3,8 +3,14 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Event
+품목 추가 - 농장 관리 일정
 {% endblock %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농장 일정 작성</h1>
+    </div>
+{% endblock breadcrumb %}
 
 {% block content %}
 
@@ -12,7 +18,7 @@ Event
   {% csrf_token %}
   <table class="form form-table">
     {{ form }}
-    <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
+    <tr><td colspan="2"><button type="submit" class="btn btn-info right" onclick="closeSelf();"> Submit </button></td></tr>
   </table>
 </form>
 

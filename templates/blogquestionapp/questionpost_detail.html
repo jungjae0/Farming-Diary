@@ -9,8 +9,17 @@
     {{ questionpost.title }} - Blog
 {% endblock %}
 
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fas fa-pen"></i>&nbsp;팁 게시판 상세내용</h1>
+    </div>
+    {% if user.is_authenticated and user == questionpost.author %}
+        <a class="btn btn-primary float-right" href="{% url 'blogquestionapp:update-post' questionpost.pk %}" role="button"><i class="fas fa-pen"></i>  수정하기</a>
+    {% endif %}
+{% endblock breadcrumb %}
 
 {% block content %}
+<div class="container">
     <div id="post-area">
         {% if questionpost.category %}
             <span class="badge badge-secondary float-right">{{ questionpost.category }}</span>
@@ -23,18 +32,15 @@
         <h5 class="text-muted">{{ questionpost.hook_text }}</h5>
         <!-- Author -->
         <p class="lead">
-            by
-            <a href="#">{{ questionpost.author | upper }}</a>
+            작성자: &nbsp;
+            <a href="#">{{ questionpost.author }}</a>
         </p>
 
         <hr>
 
-        {% if user.is_authenticated and user == questionpost.author %}
-            <a class="btn btn-info btn-sm float-right" href="{% url 'blogquestionapp:update-post' questionpost.pk %}" role="button"><i class="fas fa-pen"></i>  Edit Post</a>
-        {% endif %}
 
         <!-- Date/Time -->
-        <p>Posted on {{ questionpost.created_at }}</p>
+        <p>작성일자: &nbsp;{{ questionpost.created_at }}</p>
 
         <hr>
 
@@ -85,7 +91,7 @@
     <div id="comment-area">
         <!-- Comments Form -->
         <div class="card my-4">
-            <h5 class="card-header">Leave a Comment:</h5>
+            <h5 class="card-header">댓글</h5>
             <div class="card-body">
                 {% if user.is_authenticated %}
                     <form id="comment-form" method="POST" action="{{ questionpost.get_absolute_url }}new_comment/">
@@ -93,10 +99,10 @@
                         <div class="form-group">
                             {{ comment_form | crispy }}
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">댓글 남기기</button>
                     </form>
                 {% else %}
-                    <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="#" data-toggle="modal" data-target="#loginModal">Log in and leave a comment</a>
+                    <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% url 'accounts:signin' %}">로그인이 필요합니다.</a>
                 {% endif %}
             </div>
         </div>
@@ -113,14 +119,14 @@
                                    class="btn btn-sm btn-info"
                                    id="comment-{{ comment.pk }}-update-btn"
                                    href="{% url 'blogquestionapp:update-comment' comment.pk %}">
-                                    edit
+                                    수정하기
                                 </a>
                                 <a role="button"
                                    href="#"
                                    id="comment-{{ comment.pk }}-delete-modal-btn"
                                    class="btn btn-sm btn-danger"
                                    data-toggle="modal" data-target="#deleteCommentModal-{{ comment.pk }}">
-                                    delete
+                                    삭제하기
                                 </a>
                             </div>
 
@@ -129,7 +135,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel">Are You Sure?</h5>
+                                            <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -138,8 +144,8 @@
                                             <del>{{ comment | linebreaks }}</del>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                            <a role="button" class="btn btn-danger" href="/blogquestion/delete_comment/{{ comment.pk }}/">Delete</a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                            <a role="button" class="btn btn-danger" href="/blogquestion/delete_comment/{{ comment.pk }}/">삭제</a>
                                         </div>
                                     </div>
                                 </div>
@@ -159,4 +165,5 @@
             {% endfor %}
         {% endif %}
     </div>
+</div>
 {% endblock content %}

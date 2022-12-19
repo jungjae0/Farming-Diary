@@ -4,22 +4,60 @@
 Event Details
 {% endblock %}
 
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-wallet"></i>&nbsp;{{ ledger.date | date:'Y' }}년 {{ ledger.date | date:'m' }}월 {{ ledger.date | date:'m' }}일 장부 내역</h1>
+    </div>
+    <div class="clearfix" align="right">
+        <a class="btn btn-info right mr-2" href="{% url 'ledgerapp:ledger_edit' ledger.pk %}"> 수정하기 </a>
+    </div>
+{% endblock breadcrumb %}
+
 {% block content %}
 <div class="container">
-    <div class="clearfix">
-        <a class="btn btn-info right mr-2" href="{% url 'ledgerapp:ledger_edit' ledger.pk %}"> Edit Event </a>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="title-body">
+            <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info">
+                <thead>
+                    <tr role="row">
+                        <th class="sorting_asc" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 189.281px;">일자</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">구분</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 102.141px;">품목</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">사업유형</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">종류</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">거래처</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">금액</th>
+                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">결제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr role="row" class="odd">
+                    <td class="sorting_1">{{ ledger.date | date:'Y-m-d' }}</td>
+                    {% if event.type == '수입' %}
+                    <td class="text-info">{{ ledger.type }}</td>
+                    {% else %}
+                    <td class="text-danger">{{ ledger.type }}</td>
+                    {% endif %}
+                    <td>{{ ledger.item }}</td>
+                    <td>{{ ledger.business }}</td>
+                    <td>{{ ledger.category }}</td>
+                    <td>{{ ledger.correspondent }}</td>
+                    <td>{{ ledger.amount }}</td>
+                    {% if ledger.payment == "신용카드" %}
+                    <td class="text-warning">{{ ledger.payment }}</td>
+                    {% elif ledger.payment == "체크카드" %}
+                    <td class="text-success">{{ ledger.payment }}</td>
+                    {% else %}
+                    <td class="text-primary">{{ ledger.payment }}</td>
+                    {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div class="clearfix">
-        <h3>날짜: {{ ledger.date }}</h3>
-        <p>구분: {{ ledger.type }}</p>
-        <p>품목: {{ ledger.item }}</p>
-        <p>종류: {{ ledger.business }}</p>
-        <p>거래처: {{ ledger.category }}</p>
-        <p>금액: {{ ledger.correspondent }}</p>
-        <p>결제: {{ ledger.amount }}</p>
-        <p>내용: {{ ledger.description }}</p>
     </div>
-    <hr>
+                <h5>내용</h5>
+        <p>{{ ledger.description }}</p>
 </div>
 {% endblock %}

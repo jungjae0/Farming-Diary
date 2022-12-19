@@ -12,7 +12,9 @@ class ItemForm(ModelForm):
 class LedgerForm(ModelForm):
     class Meta:
         model = Ledger
-        fields = ["date","type","item","business","category","correspondent","amount","payment","description"]
+        fields = ["date","type","item","business","category",
+                  "correspondent",
+                  "amount","payment","description"]
         # datetime-local is a HTML5 input type
         widgets = {
             "date": DateInput(

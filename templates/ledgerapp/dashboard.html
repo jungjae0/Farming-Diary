@@ -5,20 +5,18 @@
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
-        <p>Event Dashboard</p>
+        <h1><i class="fa-solid fa-wallet"></i>&nbsp;{{ month }}월 입출금 장부 현황</h1>
     </div>
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-    </ul>
+    <div align="right">
+        <a class="btn btn-primary" href="{% url 'ledgerapp:ledger_new' %}">추가하기</a>
+    </div>
 {% endblock breadcrumb %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-6 col-lg-4">
         <div class="widget-small primary coloured-icon">
-            <i class="icon fa fa-files-o fa-3x"></i>
+            <i class="icon fa-solid fa-sack-dollar fa-3x"></i>
             <div class="info">
                 <h4>{{ month }}월 수입</h4>
                 <p><b>{{ income.count }} 건</b></p>
@@ -26,8 +24,8 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
-        <div class="widget-small info coloured-icon">
-            <i class="icon fa fa-thumbs-o-up fa-3x"></i>
+        <div class="widget-small primary coloured-icon">
+            <i class="icon fa-solid fa-sack-xmark fa-3x"></i>
             <div class="info">
                 <h4>{{ month }}월 지출</h4>
                 <p><b>{{ outcome.count }} 건</b></p>
@@ -35,8 +33,8 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
-        <div class="widget-small warning coloured-icon">
-            <i class="icon fa fa-users fa-3x"></i>
+        <div class="widget-small primary coloured-icon">
+            <i class="icon fa-solid fa-money-bill-transfer fa-3x"></i>
             <div class="info">
                 <h4>{{ month }}월 합계</h4>
                 <p><b>{{ total_ledger.count }} 건</b></p>
@@ -64,39 +62,64 @@
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">거래처</th>
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">금액</th>
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">결제</th>
-                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">버튼</th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    {% for event in income %}
+                                    {% for event in total_ledger %}
                                         <tr role="row" class="odd">
-                                            <td>{{ event.date }}</td>
-                                            <td>{{ event.type }}</td>
-                                            <td>{{ event.item }}</td>
-                                            <td>{{ event.business }}</td>
-                                            <td>{{ event.category }}</td>
-                                            <td>{{ event.correspondent }}</td>
-                                            <td>{{ event.amount }}</td>
-                                            <td>{{ event.payment }}</td>
-                                            <td>
-                                              <a class="btn btn-info" href="#" title="view" onclick="showPopup('{% url 'ledgerapp:ledger-detail' event.pk %}')">
-                                                  <i class="fa fa-eye"></i>
-                                              </a>
-                                              <a class="btn btn-info" href="#" title="edit" onclick="showPopup('{% url 'ledgerapp:ledger_edit' event.pk %}')">
-                                                <i class="fa fa-edit"></i>
-                                              </a>
-                                              <a class="btn btn-danger" href="{% url 'ledgerapp:remove_ledger' event.pk %}" title="delete">
-                                                  <i class="fa fa-trash"></i>
-                                              </a>
-                                            </td>
-                                        </tr>
+                                                <td class="sorting_1">{{ event.date | date:'Y-m-d' }}</td>
+                                                {% if event.type == '수입' %}
+                                                <td class="text-info">{{ event.type }}</td>
+                                                {% else %}
+                                                <td class="text-danger">{{ event.type }}</td>
+                                                {% endif %}
+                                                <td>{{ event.item }}</td>
+                                                <td>{{ event.business }}</td>
+                                                <td>{{ event.category }}</td>
+                                                <td>{{ event.correspondent }}</td>
+                                                <td>{{ event.amount }}</td>
+                                                {% if evnet.payment == "신용카드" %}
+                                                <td class="text-warning">{{ event.payment }}</td>
+                                                {% elif evnet.payment == "체크카드" %}
+                                                <td class="text-success">{{ event.payment }}</td>
+                                                {% else %}
+                                                <td class="text-primary">{{ event.payment }}</td>
+                                                {% endif %}
+<!--                                                <td>{{ event.end_time }}</td>-->
+                                                <td>
+                                                  <a class="btn btn-info btn-sm" href="{% url 'ledgerapp:ledger-detail' event.pk %}" title="view">
+                                                      <i class="fa fa-eye"></i>
+                                                  </a>
+                                                  <a role="button"
+                                                   href="#"
+                                                   id="comment-{{ event.pk }}-delete-modal-btn"
+                                                   class="btn btn-sm btn-danger"
+                                                   data-toggle="modal" data-target="#deleteCommentModal-{{ event.pk }}">
+                                                    <i class="fa fa-trash"></i>
+                                                  </a>
+                                                  <div class="modal fade" id="deleteCommentModal-{{ event.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                                                <a role="button" class="btn btn-danger" href="{% url 'ledgerapp:ledger-remove' event.pk %}">삭제</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                </td>
+                                            </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <div align="right">
-                            <a class="btn btn-success" href="{% url 'ledgerapp:ledger_new' %}">추가하기</a>
-                            </div>
                         </div>
                     </div>
                 </div>

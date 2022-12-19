@@ -4,59 +4,67 @@
 <script src="https://kit.fontawesome.com/726bbd6862.js" crossorigin="anonymous"></script>
 {% endblock extracss %}
 
-{% block content %}
-    {% if user.is_authenticated%}
-            <a class="btn btn-info btn-sm float-right" href="{% url 'blogapp:create-post' %}" role="button"><i class="fas fa-pen"></i>&nbsp;&nbsp;New Post</a>
-    {% endif %}
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fas fa-pen"></i>&nbsp;팁 게시판</h1>
+    </div>
+{% if user.is_authenticated %}
+    <div align="right">
+        <a class="btn btn-primary" href="{% url 'blogapp:create-post' %}"><i class="fas fa-pen"></i>&nbsp;작성하기</a>
+    </div>
+{% endif %}
+{% endblock breadcrumb %}
 
+{% block content %}
     <h1>
-        Blog
         {% if search_info %}<small class="text-muted">{{ search_info }}</small>{% endif %}
         {% if category %}<span class="badge badge-secondary">{{ category }}</span>{% endif %}
         {% if tag %}<span class="badge badge-light"><i class="fas fa-tags"></i>{{ tag }} ({{ tag.post_set.count }})</span>{% endif %}
     </h1>
 
     {% if post_list.exists %}
+        <div class="row">
+            {% for p in post_list %}
+                    <!-- Blog Post -->
+                <div class="col-md-3">
+                    <div class="card mb-3" style="width: 18rem; height: 45rem;" id="post-{{ p.pk }}">
+                        {% if p.head_image %}
+                            <img class="card-img-top" src="{{ p.head_image.url }}" alt="{{ p }} head image">
+                        {% else %}
+                            <img class="card-img-top" src="https://picsum.photos/seed/{{ p.id }}/800/200" alt="random_image">
+                        {% endif %}
 
-        {% for p in post_list %}
-            <!-- Blog Post -->
-            <div class="card mb-4" id="post-{{ p.pk }}">
-                {% if p.head_image %}
-                    <img class="card-img-top" src="{{ p.head_image.url }}" alt="{{ p }} head image">
-                {% else %}
-                    <img class="card-img-top" src="https://picsum.photos/seed/{{ p.id }}/800/200" alt="random_image">
-                {% endif %}
-                <div class="card-body">
-                    {% if p.category %}
-                        <span class="badge badge-secondary float-right">{{ p.category }}</span>
-                    {% else %}
-                        <span class="badge badge-secondary float-right">미분류</span>
-                    {% endif %}
+                        <div class="card-body">
+                            {% if p.category %}
+                                <span class="badge badge-secondary float-top">{{ p.category }}</span>
+                            {% else %}
+                                <span class="badge badge-secondary float-top">미분류</span>
+                            {% endif %}
 
-                    <h2 class="card-title">{{ p.title}}</h2>
-                    {% if p.hook_text %}
-                        <h5 class="text-muted">{{ p.hook_text }}</h5>
-                    {% endif %}
-                    <p class="card-text">{{ p.get_content_markdown | truncatewords_html:45 | safe }}</p>
+                            <h4 class="card-title">{{ p.title }}</h4>
 
-                    {% if p.tags.exists %}
-                        <i class="fas fa-tags"></i>
-                        {% for tag in p.tags.iterator %}
-                            <a href="{{ tag.get_absolute_url }}"><span class="badge badge-pill badge-light">{{ tag }}</span></a>
-                        {% endfor %}
-                        <br/>
-                        <br/>
-                    {% endif %}
+                            {% if p.hook_text %}
+                                <h5 class="text-muted">{{ p.hook_text }}</h5>
+                            {% endif %}
+        <!--                    <p class="card-text">{{ p.get_content_markdown | truncatewords_html:45 | safe }}</p>-->
 
-                    <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+                            {% if p.tags.exists %}
+                                <i class="fas fa-tags"></i>
+                                {% for tag in p.tags.iterator %}
+                                    <a href="{{ tag.get_absolute_url }}"><span class="badge badge-pill badge-light">{{ tag }}</span></a>
+                                {% endfor %}
+                            {% endif %}
+
+                             <br/><br/><a href="{{ p.get_absolute_url }}" class="btn btn-primary">자세히 보기 &rarr;</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            작성일자: {{ p.created_at }}<br/>
+                            <a href="#"> 작성자: {{ p.author }}</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer text-muted">
-                    Posted on {{ p.created_at }} by
-                    <a href="#">{{ p.author | upper }}</a>
-                </div>
-            </div>
-        {% endfor %}
-
+                {% endfor %}
+        </div>
     {% else %}
         <h3>아직 게시물이 없습니다.</h3>
     {% endif %}

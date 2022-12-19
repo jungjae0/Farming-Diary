@@ -1,17 +1,52 @@
 {% extends 'base/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}
-Event
+농장 관리 일정 작성
 {% endblock %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농장 일정 작성</h1>
+    </div>
+{% endblock breadcrumb %}
 
 {% block content %}
 
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <table class="form form-table">
-    {{ form }}
-    <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
-  </table>
-</form>
-
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <table class="form form-table">
+            {{ form.title | as_crispy_field }}
+        <div class="row">
+            <div class="col-6">
+              {{ form.start_time | as_crispy_field }}
+            </div>
+            <div class="col-6">
+              {{ form.end_time | as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                {{ form.item | as_crispy_field }}
+                <a class="btn btn-primary btn-sm" href="#" title="view" onclick="showPopup('{% url 'calendarapp:item-new' %}')">
+                    품목 추가
+                </a>
+            </div>
+            <div class="col-4">
+                {{ form.level | as_crispy_field }}
+            </div>
+            <div class="col-4">
+                {{ form.active | as_crispy_field }}
+            </div>
+        </div>
+        {{ form.description | as_crispy_field }}
+        {{ form.image | as_crispy_field }}
+        <tr><td colspan="2"><button type="submit" class="btn btn-primary right"> Submit </button></td></tr>
+      </table>
+    </form>
 {% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+function showPopup(target) { window.open(target, "a", "width=300, height=100, left=300, top=200"); }
+</script>
+{% endblock extrascripts %}

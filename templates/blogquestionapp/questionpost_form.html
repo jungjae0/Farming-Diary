@@ -2,9 +2,14 @@
 {% load crispy_forms_tags %}
 {% block head_title %}Create Post - Blog{% endblock %}
 
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-pen-to-square"></i>&nbsp;질문 게시물 작성</h1>
+    </div>
+{% endblock breadcrumb %}
+
 {% block content %}
-    <h1>Create New Post</h1>
-    <hr/>
+<div class="container">
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
         {{ form | crispy }}
         <div id="div_id_tags_str">
@@ -16,4 +21,5 @@
         <button type="submit" class="btn btn-primary float-right">Submit</button>
     </form>
     {{ form.media }}
+</div>
 {% endblock content%}

@@ -2,18 +2,76 @@
 {% load static %}
 
 
-{% block title %}Weather - Humid Average{% endblock title %}
+{% block title %}날씨 분석 보고서 - 온도{% endblock title %}
+
+{% block extracss %}
+<script src="https://kit.fontawesome.com/a9d24cc8c1.js" crossorigin="anonymous"></script>
+{% endblock extracss %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-sharp fa-solid fa-cloud-bolt-sun"></i>날씨 분석 보고서 - 온도</h1>
+    </div>
+{% endblock breadcrumb %}
+
 {% block content %}
+<div align="center">
+    <h3>어제 날씨</h3>
+    <hr>
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-3">
+        <div class="widget-small primary coloured-icon">
+            <i class="icon fa fa-thermometer-half fa-3x"></i>
+            <div class="info">
+                <h4>온도</h4>
+                <p><b>{{ yesterday_tavg }}</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="widget-small primary coloured-icon">
+            <i class="icon fa fa-tint fa-3x"></i>
+            <div class="info">
+                <h4>습도</h4>
+                <p><b>{{ yesterday_thum }}%</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="widget-small primary coloured-icon">
+            <i class="icon fa fa-snowflake-o fa-3x"></i>
+            <div class="info">
+                <h4>강수량</h4>
+                <p><b>{{ yesterday_rainfall }}mm</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+          <div class="widget-small primary coloured-icon">
+              <i class="icon fa fa-sun-o fa-3x"></i>
+              <div class="info">
+                  <h4>일조량</h4>
+                  <p><b>{{ yesterday_sunshine }}MJ/cm<sup>2</sup></b></p>
+              </div>
+          </div>
+      </div>
+</div>
+<div align="center">
+    <h3>날씨 분석</h3>
+    <hr>
+    <a href="{% url 'weatherapp:temp-graph' %}" class="btn btn-primary btn-lg" role="button" aria-disabled="true">온도</a>
+    <a href="{% url 'weatherapp:humid-graph' %}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">습도</a>
+    <a href="{% url 'weatherapp:rainfall-graph' %}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">강수량</a>
+    <a href="{% url 'weatherapp:insolation-graph' %}" class="btn btn-secondary btn-lg" role="button" aria-disabled="true">일사량</a>
 
     <div id="myFirstchart-container">{{ output|safe }}</div>
-
+</div>
 
 {% endblock content %}
 
 {% block extrascripts %}
     <script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.js' %}"></script>
     <script type="text/javascript" src="{% static 'fusioncharts/fusioncharts.charts.js' %}"></script>
-
     <script type="text/javascript" src="{% static 'fusioncharts/themes/fusioncharts.theme.fusion.js' %}"></script>
-
 {% endblock extrascripts %}

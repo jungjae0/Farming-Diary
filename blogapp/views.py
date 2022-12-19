@@ -1,12 +1,17 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
-from .models import Post, Category, Tag, Comment
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from .forms import CommentForm
+
+from .models import Post, Category, Tag, Comment
+from .forms import CommentForm, CategoryForm
+
 
 
 class PostList(ListView):
@@ -41,7 +46,7 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
         current_user = self.request.user
-        if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser or user.is_authenticated):
+        if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser or current_user.is_authenticated):
             form.instance.author = current_user
             response = super(PostCreate, self).form_valid(form)
 
@@ -128,6 +133,19 @@ def category_page(request, slug):
         }
     )
 
+# @login_required(login_url="signup")
+def create_category(request, slug):
+    form = CategoryForm(request.POST or None)
+    if request.POST and form.is_valid():
+        name = form.cleaned_data["name"]
+        Category.objects.get_or_create(
+            name = name,
+            slug = slug,
+        )
+
+
+        # return HttpResponseRedirect(reverse("blogapp:create-post"))
+    return render(request, "blogapp/blog-category.html", {"form": form})
 
 def tag_page(request, slug):
     tag = Tag.objects.get(slug=slug)

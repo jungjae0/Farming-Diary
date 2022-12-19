@@ -70,6 +70,9 @@ class Ledger(LedgerAbstract):
     def get_absolute_url(self):
         return reverse("ledgerapp:ledger-detail", args=(self.id,))
 
+    def get_absolute_url2(self):
+        return reverse("ledgerapp:dashboard")
+
     @property
     def get_html_url(self):
         url = reverse("ledgerapp:ledger-detail", args=(self.id,))

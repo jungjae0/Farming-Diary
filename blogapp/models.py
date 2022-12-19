@@ -33,7 +33,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=25)
     hook_text = models.CharField(max_length=100, blank=True)
     content = MarkdownxField()
 

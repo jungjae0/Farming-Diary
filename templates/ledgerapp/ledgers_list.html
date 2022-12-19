@@ -5,13 +5,11 @@
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
-        <p>Event List</p>
+        <h1><i class="fa-solid fa-wallet"></i>&nbsp;입출금 장부</h1>
     </div>
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Event List</a></li>
-    </ul>
+    <div align="right">
+        <a class="btn btn-primary" href="{% url 'ledgerapp:ledger_new' %}">추가하기</a>
+    </div>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -60,15 +58,32 @@
                                                 {% endif %}
 <!--                                                <td>{{ event.end_time }}</td>-->
                                                 <td>
-                                                  <a class="btn btn-info" href="{% url 'ledgerapp:ledger-detail' event.pk %}" title="view">
+                                                  <a class="btn btn-info btn-sm" href="{% url 'ledgerapp:ledger-detail' event.pk %}" title="view">
                                                       <i class="fa fa-eye"></i>
                                                   </a>
-                                                  <a class="btn btn-info" href="{% url 'ledgerapp:ledger_edit' event.pk %}" title="edit">
-                                                    <i class="fa fa-edit"></i>
+                                                  <a role="button"
+                                                   href="#"
+                                                   id="comment-{{ event.pk }}-delete-modal-btn"
+                                                   class="btn btn-sm btn-danger"
+                                                   data-toggle="modal" data-target="#deleteCommentModal-{{ event.pk }}">
+                                                    <i class="fa fa-trash"></i>
                                                   </a>
-                                                  <a class="btn btn-danger" href="{% url 'ledgerapp:remove_ledger' event.pk %}" title="delete">
-                                                      <i class="fa fa-trash"></i>
-                                                  </a>
+                                                  <div class="modal fade" id="deleteCommentModal-{{ event.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                                                <a role="button" class="btn btn-danger" href="{% url 'ledgerapp:ledger-remove' event.pk %}">삭제</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  </div>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -89,5 +104,4 @@
     <script type="text/javascript" src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/plugins/dataTables.bootstrap.min.js' %}"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
-
 {% endblock extrascripts %}

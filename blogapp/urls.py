@@ -11,6 +11,7 @@ urlpatterns = [
     path('create_post/', views.PostCreate.as_view(), name="create-post"),
     path('tag/<str:slug>/', views.tag_page, name="tag"),
     path('category/<str:slug>/', views.category_page, name="category"),
+    path('category/new/', views.create_category, name="category-new"),
     path('<int:pk>/new_comment/', views.new_comment, name="new-comment"),
     path('<int:pk>/', views.PostDetail.as_view(), name="post-detail"),
     path('', views.PostList.as_view(), name="post-list"),

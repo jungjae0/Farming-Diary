@@ -8,5 +8,5 @@ urlpatterns = [
     path('thum/', views.thum, name='humid-graph'),
     path('trainfall/', views.trainfall, name='rainfall-graph'),
     path('insolation/', views.sunshine, name='insolation-graph'),
-    path('yesterday/', views.yesterday_weather, name='yesterday'),
+    # path('yesterday/', views.tavg, name='yesterday'),
 ]

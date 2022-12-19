@@ -1,23 +1,39 @@
 {% extends 'base/base.html' %}
 
 {% block title %}
-Event Details
+농장 관리 일정 상세
 {% endblock %}
+
+{% block breadcrumb %}
+    <div>
+        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농장 일정 상세: {{ event.title }} </h1>
+    </div>
+<a class="btn btn-info right mr-2" href="{% url 'calendarapp:event-edit' event.pk %}"> Edit Event </a>
+{% endblock breadcrumb %}
 
 {% block content %}
     <div class="container">
         <div class="clearfix">
-            <a class="btn btn-info right mr-2" href="{% url 'calendarapp:event-edit' event.pk %}"> Edit Event </a>
-        </div>
-
-        <div class="clearfix">
-            <h3>Event Name: {{ event.title }}</h3>
-            <p>From <span style="color: gray;">{{ event.start_time }}</span> To <span style="color: gray;">{{ event.end_time }}</span></p>
+            <h3>일정 제목: {{ event.title }}</h3>
             <hr>
+            <h4>시작일:&nbsp;<span style="color: gray;">{{ event.start_time | date:'Y-m-d P' }}</span> 마감일:&nbsp;<span style="color: gray;">{{ event.end_time | date:'Y-m-d P' }}</span></h4>
+            <hr>
+            <div class="row">
+                <div class="col-4">
+                    <h5>품목<br/></h5>
+                    <p>{{ event.item }}</p>
+                </div>
+                <div class="col-4">
+                    <h5>활동<br/></h5>
+                    <p>{{ event.active }}</p>
+                </div>
+                <div class="col-4">
+                    <h5>작업단계<br/></h5>
+                    <p>{{ event.level }}</p>
+                </div>
+            </div>
+            <h5>메모<br/></h5>
             <p>{{ event.description }}</p>
-            <p>{{ event.item }}</p>
-            <p>{{ event.active }}</p>
-            <p>{{ event.level }}</p>
             {% if event.image %}
             <img class="img-fluid rounded" src="{{ event.image.url }}">
             {% endif %}

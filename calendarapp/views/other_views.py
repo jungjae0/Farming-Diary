@@ -1,6 +1,6 @@
 # cal/ledger.py
-
-from django.shortcuts import render, redirect
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.utils.safestring import mark_safe
@@ -56,6 +56,8 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context["calendar"] = mark_safe(html_cal)
         context["prev_month"] = prev_month(d)
         context["next_month"] = next_month(d)
+        context["running_events"] = self.model.objects.get_running_events(user=self.request.user)
+        context["expected_events"] = self.model.objects.get_expected_events(user=self.request.user)
         return context
 
 
@@ -69,7 +71,7 @@ def create_event(request):
         item = form.cleaned_data["item"]
         description = form.cleaned_data["description"]
         active = form.cleaned_data["active"]
-        image = request.FILES['image']
+        image = request.FILES.get('image')
         level = form.cleaned_data["level"]
         Event.objects.get_or_create(
             user=request.user,
@@ -95,7 +97,7 @@ def create_item(request):
             item = item
         )
         return HttpResponseRedirect(reverse("calendarapp:event-new"))
-    return render(request, "calendar-item.html", {"form": form})
+    return render(request, "calendarapp/calendar-item.html", {"form": form})
 
 class EventEdit(generic.UpdateView):
     model = Event
@@ -108,52 +110,20 @@ class EventDeleteView(generic.DeleteView):
     template_name = "calendarapp/event_delete.html"
     success_url = reverse_lazy("calendarapp:calendar")
 
+def delete_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    # post = event.post
+    if request.user.is_authenticated:
+        event.delete()
+        return redirect(event.get_absolute_url2())
+    else:
+        raise PermissionDenied
+
 @login_required(login_url="signup")
 def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
     context = {"event": event }
     return render(request, "calendarapp/event-details.html", context)
-
-
-class CalendarViewNew(LoginRequiredMixin, generic.View):
-    login_url = "accounts:signin"
-    template_name = "calendarapp/calendar.html"
-    form_class = EventForm
-
-    def get(self, request, *args, **kwargs):
-        forms = self.form_class()
-        events = Event.objects.get_all_events(user=request.user)
-        events_month = Event.objects.get_running_events(user=request.user)
-        event_list = []
-        # start: '2020-09-16T16:00:00'
-        for event in events:
-            event_list.append(
-                {
-                    "title": event.title,
-                    "item": event.item,
-                    "description": event.description,
-                    "active": event.active,
-                    "image": event.image,
-                    "level": event.level,
-                    "start": event.start_time.strftime("%Y-%m-%dT%H:%M:%S"),
-                    "end": event.end_time.strftime("%Y-%m-%dT%H:%M:%S"),
-
-                }
-            )
-        context = {"form": forms, "events": event_list,
-                   "events_month": events_month}
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        forms = self.form_class(request.POST)
-        if forms.is_valid():
-            form = forms.save(commit=False)
-            form.user = request.user
-            form.save()
-            return redirect("calendarapp:calendar")
-        context = {"form": forms}
-        return render(request, self.template_name, context)
-
 
 class DashboardView(LoginRequiredMixin, View):
     login_url = "accounts:signin"
@@ -163,30 +133,53 @@ class DashboardView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         events = Event.objects.get_all_events(user=request.user)
         running_events = Event.objects.get_running_events(user=request.user)
+        expected_events = Event.objects.get_expected_events(user=request.user)
         latest_events = Event.objects.filter(user=request.user).order_by("-id")[:10]
+        end_evnets = events.count() - running_events.count() - expected_events.count()
         context = {
             "total_event": events.count(),
             "running_events": running_events,
             "latest_events": latest_events,
+            "expected_events": expected_events,
+            "end_events": end_evnets
         }
         return render(request, self.template_name, context)
 
-        # data = Event.objects.get_all_events(user=request.user)
-        # month = datetime.today().month
-        # year = datetime.today().year
-        #
-        # df = pd.DataFrame(list(data))
-        #
-        # df['create_at'] = pd.to_datetime(df['create_at'])
-        #
-        # events = df[(df['create_at'].month == month) & (df['date'].year == year)].count_values()
-        # running_events = Event.objects.get_running_events(user=request.user)
-        # latest_events = Event.objects.filter(user=request.user).order_by("-id")[:10]
-        #
-        # context = {
-        #     "total_events": events,
-        #     "running_events": running_events,
-        #     "latest_evnets": latest_events,
-        # }
-        #
-        # return render(request, self.template_name, context)
+# class CalendarViewNew(LoginRequiredMixin, generic.View):
+#     login_url = "accounts:signin"
+#     template_name = "calendarapp/calendar.html"
+#     form_class = EventForm
+#
+#     def get(self, request, *args, **kwargs):
+#         forms = self.form_class()
+#         events = Event.objects.get_all_events(user=request.user)
+#         events_month = Event.objects.get_running_events(user=request.user)
+#         event_list = []
+#         # start: '2020-09-16T16:00:00'
+#         for event in events:
+#             event_list.append(
+#                 {
+#                     "title": event.title,
+#                     "item": event.item,
+#                     "description": event.description,
+#                     "active": event.active,
+#                     "image": event.image,
+#                     "level": event.level,
+#                     "start": event.start_time.strftime("%Y-%m-%dT%H:%M:%S"),
+#                     "end": event.end_time.strftime("%Y-%m-%dT%H:%M:%S"),
+#
+#                 }
+#             )
+#         context = {"form": forms, "events": event_list,
+#                    "events_month": events_month}
+#         return render(request, self.template_name, context)
+#
+#     def post(self, request, *args, **kwargs):
+#         forms = self.form_class(request.POST)
+#         if forms.is_valid():
+#             form = forms.save(commit=False)
+#             form.user = request.user
+#             form.save()
+#             return redirect("calendarapp:calendar")
+#         context = {"form": forms}
+#         return render(request, self.template_name, context)

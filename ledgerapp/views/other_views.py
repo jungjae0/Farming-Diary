@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.utils.safestring import mark_safe
@@ -68,6 +69,15 @@ class LedgerDeleteView(generic.DeleteView):
     template_name = "ledgerapp/ledger-delete.html"
     success_url = reverse_lazy("ledgerapp:dashboard")
 
+def delete_ledger(request, pk):
+    ledger = get_object_or_404(Ledger, pk=pk)
+    # post = event.post
+    if request.user.is_authenticated:
+        ledger.delete()
+        return redirect(ledger.get_absolute_url2())
+    else:
+        raise PermissionDenied
+
 @login_required(login_url="signup")
 def create_item(request):
     form = ItemForm(request.POST or None)
@@ -77,8 +87,8 @@ def create_item(request):
             # user=request.user,
             item = item
         )
-        return HttpResponseRedirect(reverse("calendarapp:event-new"))
-    return render(request, "ledger-item.html", {"form": form})
+        return HttpResponseRedirect(reverse("ledgerapp:item-new"))
+    return render(request, "ledgerapp/ledger-item.html", {"form": form})
 
 
 

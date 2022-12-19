@@ -41,7 +41,7 @@ class QuestionPostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
         current_user = self.request.user
-        if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser or user.is_authenticated):
+        if current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser or current_user.is_authenticated):
             form.instance.author = current_user
             response = super(QuestionPostCreate, self).form_valid(form)
 
@@ -131,13 +131,12 @@ def category_page(request, slug):
 
 def tag_page(request, slug):
     tag = QuestionTag.objects.get(slug=slug)
-    post_list = tag.post_set.all()
-
+    post_list = tag.questionpost_set.all()
     return render(
         request,
         'blogquestionapp/questionpost_list.html',
         {
-            'post_list': post_list,
+            'questionpost_list': post_list,
             'tag': tag,
             'categories': QuestionCategory.objects.all(),
             'no_category_post_count': QuestionPost.objects.filter(category=None).count(),

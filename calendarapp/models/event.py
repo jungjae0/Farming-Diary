@@ -18,9 +18,22 @@ class EventManager(models.Manager):
             user=user,
             is_active=True,
             is_deleted=False,
-            end_time__gte=datetime.now().date(),
+            start_time__lte=datetime.now(),
+            end_time__gt=datetime.now(),
         ).order_by("start_time")
         return running_events
+
+    def get_expected_events(self, user):
+        expected_events = Event.objects.filter(
+            user=user,
+            is_active=True,
+            is_deleted=False,
+            start_time__gt=datetime.now(),
+            end_time__gt=datetime.now(),
+        ).order_by("start_time")
+
+        return expected_events
+
 
 class Item(models.Model):
     item = models.CharField(max_length=50, unique=True)
@@ -57,7 +70,7 @@ class Event(EventAbstract):
     description = models.TextField()
     active = models.CharField(max_length=100, choices=ACTIVE_CHOICES)
     # weather =
-    image = models.ImageField(upload_to='images', blank=True, null=True)
+    image = models.ImageField(upload_to='images', blank=True)
     level = models.CharField(max_length=100, choices=LEVEL_CHOICES)
 
     objects = EventManager()
@@ -67,6 +80,9 @@ class Event(EventAbstract):
 
     def get_absolute_url(self):
         return reverse("calendarapp:event-detail", args=[self.id])
+
+    def get_absolute_url2(self):
+        return reverse("calendarapp:calendar")
 
     @property
     def get_html_url(self):

@@ -13,8 +13,8 @@
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
         <!-- Font-icon css-->
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <script src="https://kit.fontawesome.com/726bbd6862.js" crossorigin="anonymous"></script>
+<!--        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />-->
+        <script src="https://kit.fontawesome.com/a9d24cc8c1.js" crossorigin="anonymous"></script>
         {% block extracss %}
         {% endblock extracss %}
     </head>
@@ -26,24 +26,20 @@
             <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
             <!-- Navbar Right Menu-->
             <ul class="app-nav">
-                <li class="app-search">
-                    <input class="app-search__input" type="search" placeholder="Search" />
-                    <button class="app-search__button"><i class="fa fa-search"></i></button>
-                </li>
                 <!-- User Menu-->
                 <li class="dropdown">
                     <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
                     <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                        <li>
-                            <a class="dropdown-item" href="#"><i class="fa fa-user fa-lg"></i> Profile</a>
-                        </li>
                         {% if user.is_authenticated %}
                         <li>
                             <a class="dropdown-item" href="{% url 'accounts:signout' %}"><i class="fa fa-sign-out fa-lg"></i> Sign Out</a>
                         </li>
                         {% else %}
                         <li>
-                            <a class="dropdown-item" href="{% url 'accounts:signin' %}"><i class="fa fa-sign-out fa-lg"></i> Sign In</a>
+                            <a class="dropdown-item" href="{% url 'accounts:signin' %}"><i class="fa fa-sign-in fa-lg"></i> Sign In</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="mail.html"><i class="fa fa-sign-in fa-lg"></i>문의</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -54,72 +50,64 @@
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
             <ul class="app-menu">
-                <li>
-                    <a class="app-menu__item active" href="{% url 'forcastapp:result' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Home</span></a>
-                </li>
-                <li>
-                    <a class="app-menu__item active" href="{% url 'calendarapp:dashboard' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">영농일지 현황</span></a>
-                </li>
-                <li>
-                    <a class="app-menu__item" href="{% url 'calendarapp:calendar' %}"><i class="app-menu__icon fa fa-calendar"></i><span class="app-menu__label">달력</span></a>
+                <li class="treeview">
+                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sun-o"></i><span class="app-menu__label">&nbsp;날씨</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a class="treeview-item" href="{% url 'forcastapp:result' %}"><i class="icon fa fa-circle-o"></i>날씨 예보</a>
+                        </li>
+                        <li>
+                            <a class="treeview-item" href="{% url 'weatherapp:temp-graph' %}"><i class="icon fa fa-circle-o"></i>날씨 분석 보고서</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="treeview">
-                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">영농일지</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">&nbsp;영농일지</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                     <ul class="treeview-menu">
                         <li>
-                            <a class="treeview-item" href="{% url 'calendarapp:running_events' %}"><i class="icon fa fa-circle-o"></i>진행 중</a>
+                            <a class="treeview-item" href="{% url 'calendarapp:dashboard' %}"><i class="icon fa fa-circle-o"></i>&nbsp;현황</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="{% url 'calendarapp:running_events' %}"><i class="icon fa fa-circle-o"></i>예정</a>
+                            <a class="treeview-item" href="{% url 'calendarapp:calendar' %}"><i class="icon fa fa-circle-o"></i>&nbsp;달력</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="{% url 'calendarapp:all-events' %}"><i class="icon fa fa-circle-o"></i>전체</a>
+                            <a class="treeview-item" href="{% url 'calendarapp:running_events' %}"><i class="icon fa fa-circle-o"></i>&nbsp;진행 중</a>
+                        </li>
+                        <li>
+                            <a class="treeview-item" href="{% url 'calendarapp:expected_events' %}"><i class="icon fa fa-circle-o"></i>&nbsp;예정</a>
+                        </li>
+                        <li>
+                            <a class="treeview-item" href="{% url 'calendarapp:all-events' %}"><i class="icon fa fa-circle-o"></i>&nbsp;전체</a>
                         </li>
                     </ul>
-                </li>
-                <li>
-                    <a class="app-menu__item active" href="{% url 'ledgerapp:dashboard' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">입출금 장부 현황</span></a>
                 </li>
                 <li class="treeview">
-                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">입출금 장부</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">&nbsp;입출금 장부</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                     <ul class="treeview-menu">
                         <li>
-                            <a class="treeview-item" href="{% url 'ledgerapp:all_ledgers' %}"><i class="icon fa fa-circle-o"></i>전체</a>
+                            <a class="treeview-item" href="{% url 'ledgerapp:dashboard' %}"><i class="icon fa fa-circle-o"></i>&nbsp;현황</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="{% url 'ledgerapp:income-ledgers' %}"><i class="icon fa fa-circle-o"></i>수입</a>
+                            <a class="treeview-item" href="{% url 'ledgerapp:all_ledgers' %}"><i class="icon fa fa-circle-o"></i>&nbsp;전체</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="{% url 'ledgerapp:outcome-ledgers' %}"><i class="icon fa fa-circle-o"></i>지출</a>
+                            <a class="treeview-item" href="{% url 'ledgerapp:income-ledgers' %}"><i class="icon fa fa-circle-o"></i>&nbsp;수입</a>
+                        </li>
+                        <li>
+                            <a class="treeview-item" href="{% url 'ledgerapp:outcome-ledgers' %}"><i class="icon fa fa-circle-o"></i>&nbsp;지출</a>
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a class="app-menu__item active" href="{% url 'weatherapp:yesterday' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">어제 날씨</span></a>
-                </li>
-                 <li class="treeview">
-                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">날씨 분석</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                <li class="treeview">
+                    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pencil"></i><span class="app-menu__label">게시판</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                     <ul class="treeview-menu">
                         <li>
-                            <a class="treeview-item" href="{% url 'weatherapp:temp-graph' %}"><i class="icon fa fa-circle-o"></i>온도</a>
-                        </li>
-
-                        <li>
-                            <a class="treeview-item" href="{% url 'weatherapp:humid-graph' %}"><i class="icon fa fa-circle-o"></i>습도</a>
+                            <a class="treeview-item" href="{% url 'blogapp:post-list' %}"><i class="icon fa fa-circle-o"></i>팁 게시판</a>
                         </li>
                         <li>
-                            <a class="treeview-item" href="{% url 'weatherapp:rainfall-graph' %}"><i class="icon fa fa-circle-o"></i>강우</a>
-                        </li>
-                        <li>
-                            <a class="treeview-item" href="{% url 'weatherapp:insolation-graph' %}"><i class="icon fa fa-circle-o"></i>일조량</a>
+                            <a class="treeview-item" href="{% url 'blogquestionapp:post-list' %}"><i class="icon fa fa-circle-o"></i>질문 게시판</a>
                         </li>
                     </ul>
-                </li>
-                <li>
-                    <a class="app-menu__item active" href="{% url 'blogapp:post-list' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">팁 게시판</span></a>
-                </li>
-                <li>
-                    <a class="app-menu__item active" href="{% url 'blogquestionapp:post-list' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">질문 게시판</span></a>
                 </li>
             </ul>
         </aside>
