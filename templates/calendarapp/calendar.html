@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile row">
-            <div class="col-md-3">
+            <div class="col-md-12">
                 <div id="external-events">
                     <h4 class="mb-4">진행 중인 일정</h4>
                     {% for event in running_events %}
@@ -45,7 +45,14 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-9">
+        </div>
+    </div>
+    </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile row">
+            <div class="col-md-12">
+                <h4 class="mb-4">달력</h4>
                 <div class="clearfix">
                     <a class="btn btn-info left" href="{% url 'calendarapp:calendar' %}?{{ prev_month }}"> 이전달 </a>
                     <a class="btn btn-info right" href="{% url 'calendarapp:calendar' %}?{{ next_month }}"> 다음달 </a>

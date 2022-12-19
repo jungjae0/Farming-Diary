@@ -55,15 +55,15 @@
                             <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info">
                                 <thead>
                                     <tr role="row">
-                                        <th class="sorting_asc" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 102.141px;">일자</th>
+                                        <th class="sorting_asc" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 130.141px;">일자</th>
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">구분</th>
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 102.141px;">품목</th>
-                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">사업유형</th>
+<!--                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">사업유형</th>-->
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">종류</th>
-                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">거래처</th>
+<!--                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">거래처</th>-->
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">금액</th>
                                         <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">결제</th>
-                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;"></th>
+                                        <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 50.141px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,9 +77,9 @@
                                                 <td class="text-danger">{{ event.type }}</td>
                                                 {% endif %}
                                                 <td>{{ event.item }}</td>
-                                                <td>{{ event.business }}</td>
+<!--                                                <td>{{ event.business }}</td>-->
                                                 <td>{{ event.category }}</td>
-                                                <td>{{ event.correspondent }}</td>
+<!--                                                <td>{{ event.correspondent }}</td>-->
                                                 <td>{{ event.amount }}</td>
                                                 {% if evnet.payment == "신용카드" %}
                                                 <td class="text-warning">{{ event.payment }}</td>
@@ -93,29 +93,6 @@
                                                   <a class="btn btn-info btn-sm" href="{% url 'ledgerapp:ledger-detail' event.pk %}" title="view">
                                                       <i class="fa fa-eye"></i>
                                                   </a>
-                                                  <a role="button"
-                                                   href="#"
-                                                   id="comment-{{ event.pk }}-delete-modal-btn"
-                                                   class="btn btn-sm btn-danger"
-                                                   data-toggle="modal" data-target="#deleteCommentModal-{{ event.pk }}">
-                                                    <i class="fa fa-trash"></i>
-                                                  </a>
-                                                  <div class="modal fade" id="deleteCommentModal-{{ event.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                                                                <a role="button" class="btn btn-danger" href="{% url 'ledgerapp:ledger-remove' event.pk %}">삭제</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                  </div>
                                                 </td>
                                             </tr>
                                     {% endfor %}

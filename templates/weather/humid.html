@@ -1,12 +1,12 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-
-{% block title %}날씨 분석 보고서 - 습도{% endblock title %}
-
 {% block extracss %}
 <script src="https://kit.fontawesome.com/a9d24cc8c1.js" crossorigin="anonymous"></script>
 {% endblock extracss %}
+
+{% block title %}날씨 분석 보고서 - 습도{% endblock title %}
+
 
 {% block breadcrumb %}
     <div>
@@ -20,7 +20,7 @@
     <hr>
 </div>
 <div class="row">
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-lg-6">
         <div class="widget-small primary coloured-icon">
             <i class="icon fa fa-thermometer-half fa-3x"></i>
             <div class="info">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-lg-6">
         <div class="widget-small primary coloured-icon">
             <i class="icon fa fa-tint fa-3x"></i>
             <div class="info">
@@ -38,7 +38,9 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-3">
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-6">
         <div class="widget-small primary coloured-icon">
             <i class="icon fa fa-snowflake-o fa-3x"></i>
             <div class="info">
@@ -47,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-lg-6">
           <div class="widget-small primary coloured-icon">
               <i class="icon fa fa-sun-o fa-3x"></i>
               <div class="info">
@@ -55,7 +57,8 @@
                   <p><b>{{ sun }}MJ/cm<sup>2</sup></b></p>
               </div>
           </div>
-      </div>
+    </div>
+</div>
 </div>
 <div align="center">
     <h3>날씨 분석</h3>

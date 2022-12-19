@@ -16,6 +16,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
+        <div class="tile row">
         <div class="col-sm-12">
             <div class="title-body">
             <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info">
@@ -57,7 +58,31 @@
         </div>
     </div>
     </div>
+</div>
                 <h5>내용</h5>
         <p>{{ ledger.description }}</p>
+<a role="button"
+href="#"
+id="comment-{{ ledger.pk }}-delete-modal-btn"
+class="btn btn-sm btn-danger"
+data-toggle="modal" data-target="#deleteCommentModal-{{ ledger.pk }}">
+장부 삭제하기
+</a>
+<div class="modal fade" id="deleteCommentModal-{{ ledger.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <a role="button" class="btn btn-danger" href="{% url 'ledgerapp:ledger-remove' ledger.pk %}">삭제</a>
+        </div>
+    </div>
+</div>
+</div>
 </div>
 {% endblock %}

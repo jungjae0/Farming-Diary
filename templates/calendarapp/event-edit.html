@@ -6,14 +6,14 @@ Event
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농장 일정 수정: {{ event.title }} </h1>
+        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농가 일정 수정: {{ event.title }} </h1>
     </div>
 {% endblock breadcrumb %}
 
 {% block content %}
-<form method="post">
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  <table class="form form-table" enctype="multipart/form-data">
+  <table class="form form-table">
     {{ form | crispy }}
     <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
   </table>

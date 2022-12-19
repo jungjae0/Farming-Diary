@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농장 관리 일정 현황</h1>
+        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농가 일정 현황</h1>
     </div>
     <div align="right">
         <a class="btn btn-primary right" href="{% url 'calendarapp:event-new' %}"> 추가하기 </a>
@@ -13,10 +13,11 @@
 {% endblock breadcrumb %}
 
 {% block content %}
+<div class="container" style="width:100%";>
 <div class="row">
     <div class="col-md-6 col-lg-4">
         <div class="widget-small primary coloured-icon">
-            <i class="icon fa-solid fa-calendar-days fa-3x"></i>
+            <i class="icon fa-solid fa-calendar-xmark fa-3x"></i>
             <div class="info">
                 <h4>완료 일정</h4>
                 <p><b>{{ end_events }}</b></p>
@@ -25,7 +26,7 @@
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="widget-small primary coloured-icon">
-            <i class="icon fa-solid fa-calendar-xmark fa-3x"></i>
+            <i class="icon fa-solid fa-calendar-check fa-3x"></i>
             <div class="info">
                 <h4>진행 일정</h4>
                 <p><b>{{ running_events.count }}</b></p>
@@ -34,7 +35,7 @@
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="widget-small primary coloured-icon">
-            <i class="icon fa-solid fa-calendar-check fa-3x"></i>
+            <i class="icon fa-solid fa-calendar-days fa-3x"></i>
             <div class="info">
                 <h4>예정 일정</h4>
                 <p><b>{{ expected_events.count }}</b></p>
@@ -68,32 +69,9 @@
                                                 <td>{{ event.start_time | date:'Y-m-d P' }}</td>
                                                 <td>{{ event.end_time | date:'Y-m-d P' }}</td>
                                                 <td>
-                                                  <a class="btn btn-info btn-sm" href="{% url 'calendarapp:event-detail' event.pk %}" title="view">
-                                                      &nbsp;<i class="fa fa-eye"></i>
+                                                  <a class="btn btn-info" href="{% url 'calendarapp:event-detail' event.pk %}" title="view">
+                                                      <i class="fa fa-eye"></i>
                                                   </a>
-                                                  <a role="button"
-                                                   href="#"
-                                                   id="comment-{{ event.pk }}-delete-modal-btn"
-                                                   class="btn btn-sm btn-danger"
-                                                   data-toggle="modal" data-target="#deleteCommentModal-{{ event.pk }}">
-                                                    <i class="fa fa-trash"></i>
-                                                  </a>
-                                                  <div class="modal fade" id="deleteCommentModal-{{ event.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                                                                <a role="button" class="btn btn-danger" href="{% url 'calendarapp:event-remove' event.pk %}">삭제</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                  </div>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -106,7 +84,7 @@
             </div>
         </div>
     </div>
-
+</div>
 </div>
 {% endblock content %}
 

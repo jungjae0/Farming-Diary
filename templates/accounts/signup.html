@@ -19,10 +19,10 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <div class="wrap d-md-flex">
-                            <div class="text-wrap p-4 p-lg-5 d-flex img" style="background-image: url({% static 'images/agriculture.png' %});">
+                            <div class="text-wrap p-4 p-lg-5 d-flex img">
                                 <div class="text w-100">
                                     <h2 class="mb-4">안녕하세요,</h2>
-                                    <p>다양한 기능을 사용하려면 로그인 해주세요.</p>
+                                    <p>다양한 기능을 사용하려면 회원가입을 해주세요.</p>
                                 </div>
                             </div>
                             <div class="login-wrap p-4 p-md-5">
@@ -83,6 +83,6 @@
         </section>
         {% endblock content%}
 
-        {% block extrascripts %}
-        {% include 'base/js.html' %}
-        {% endblock extrascripts %}
+{% block extrascripts %}
+    {% include 'base/js.html' %}
+{% endblock extrascripts %}

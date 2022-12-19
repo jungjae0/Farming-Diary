@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     <div>
-        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농장 일정 상세: {{ event.title }} </h1>
+        <h1><i class="fa-solid fa-calendar-days"></i>&nbsp;농가 일정 상세</h1>
     </div>
 <a class="btn btn-info right mr-2" href="{% url 'calendarapp:event-edit' event.pk %}"> 수정하기 </a>
 {% endblock breadcrumb %}
@@ -39,5 +39,28 @@
             {% endif %}
         </div>
         <hr>
+        <a role="button"
+           href="#"
+           id="comment-{{ event.pk }}-delete-modal-btn"
+           class="btn btn-danger"
+           data-toggle="modal" data-target="#deleteCommentModal-{{ event.pk }}">
+            일정 삭제
+          </a>
+          <div class="modal fade" id="deleteCommentModal-{{ event.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <a role="button" class="btn btn-danger" href="{% url 'calendarapp:event-remove' event.pk %}">삭제</a>
+                </div>
+                </div>
+            </div>
+      </div>
     </div>
 {% endblock %}

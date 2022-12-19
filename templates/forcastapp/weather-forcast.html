@@ -184,10 +184,11 @@ img{max-width:100%;}
                             alt="">{{cloud}}%</span>
                     <span class="text-white"><img src="{%static 'images/wind-direction.png' %}" alt="">{{wind}}km/h</span>
                     <span class="text-white"><img src="{%static 'images/compass.png' %}" alt="degree">{{degree}}<sup> o</sup></span>
-                    </br>
-                    <span class="text-white">{{status|capfirst }}</span>
+                    <span class="text-white">{{ status|capfirst }}</span>
                 </div>
             </div>
+        </div>
+        <div class="forecast-container">
             <div class="forecast">
                 <div class="forecast-header">
                     <div class="day text-white">{{date1}}</div>
@@ -261,6 +262,4 @@ img{max-width:100%;}
                 </div>
             </div>
         </div>
-</div>
-</div>
 {% endblock content %}

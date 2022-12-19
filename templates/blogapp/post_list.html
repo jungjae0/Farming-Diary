@@ -24,11 +24,11 @@
     </h1>
 
     {% if post_list.exists %}
-        <div class="row">
+<!--        <div class="row">-->
             {% for p in post_list %}
                     <!-- Blog Post -->
-                <div class="col-md-3">
-                    <div class="card mb-3" style="width: 18rem; height: 45rem;" id="post-{{ p.pk }}">
+<!--                <div class="col-md-4">-->
+                    <div class="card mb-4" id="post-{{ p.pk }}">
                         {% if p.head_image %}
                             <img class="card-img-top" src="{{ p.head_image.url }}" alt="{{ p }} head image">
                         {% else %}
@@ -63,9 +63,9 @@
                             <a href="#"> 작성자: {{ p.author }}</a>
                         </div>
                     </div>
-                </div>
+<!--                </div>-->
                 {% endfor %}
-        </div>
+        </div>/
     {% else %}
         <h3>아직 게시물이 없습니다.</h3>
     {% endif %}
